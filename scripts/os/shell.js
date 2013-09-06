@@ -86,6 +86,13 @@ function shellInit() {
     sc.description = "- Displays the current date and time.";
     sc.function = shellDate;
     this.commandList[this.commandList.length] = sc;
+    
+    // whereami
+    sc = new ShellCommand();
+    sc.command = "whereami";
+    sc.description = "- Displays the user's current location.";
+    sc.function = shellWhereAmI;
+    this.commandList[this.commandList.length] = sc;
 
     // processes - list the running processes and their IDs
     // kill <id> - kills the specified process id.
@@ -373,4 +380,9 @@ function shellDate()
 {
     var d = new Date();
     _StdIn.putText(d.toString());
+}
+
+function shellWhereAmI()
+{
+    _StdIn.putText("An utterly insignificant little blue-green planet far out in the uncharted backwaters of the unfashionable end of the western spiral arm of the galaxy.");
 }
