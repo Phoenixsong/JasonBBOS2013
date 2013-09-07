@@ -149,6 +149,7 @@ CanvasTextFunctions.draw = function(ctx,font,size,x,y,str)
     var total = 0;
     var len = str.length;
     var mag = size / 25.0;
+    var needsBr = false;
 
     ctx.save();
     ctx.lineCap = "round";
@@ -161,10 +162,20 @@ CanvasTextFunctions.draw = function(ctx,font,size,x,y,str)
 		if (!c)
 		{
 			continue;	
-		} 
+		}
 		ctx.beginPath();
 		var penUp = 1;
 		var needStroke = 0;
+		if ((i+1) % 50 == 0){
+			needsBr = true;
+		}
+		if (needsBr && str.charAt(i) == " "){
+			needsBr = false;
+			x = 0;
+			y += _DefaultFontSize + _FontHeightMargin;
+			_StdIn.advanceLine();
+			continue; // don't render the space
+		}
 		for (var j = 0; j < c.points.length; j++) 
 		{
 		    var a = c.points[j];
