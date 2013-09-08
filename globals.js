@@ -1,12 +1,12 @@
 /* ------------  
-   Globals.js
-
-   Global CONSTANTS and _Variables.
-   (Global over both the OS and Hardware Simulation / Host.)
-   
-   This code references page numbers in the text book: 
-   Operating System Concepts 8th edition by Silberschatz, Galvin, and Gagne.  ISBN 978-0-470-12872-5
-   ------------ */
+  Globals.js
+  
+  Global CONSTANTS and _Variables.
+  (Global over both the OS and Hardware Simulation / Host.)
+  
+  This code references page numbers in the text book: 
+  Operating System Concepts 8th edition by Silberschatz, Galvin, and Gagne.  ISBN 978-0-470-12872-5
+------------ */
 
 //
 // Global CONSTANTS
@@ -17,7 +17,7 @@ var APP_VERSION = "1";   // What did you expect?
 var CPU_CLOCK_INTERVAL = 100;   // This is in ms, or milliseconds, so 1000 = 1 second.
 
 var TIMER_IRQ = 0;  // Pages 23 (timer), 9 (interrupts), and 561 (interrupt priority).
-                    // NOTE: The timer is different from hardware/host clock pulses. Don't confuse these.
+// NOTE: The timer is different from hardware/host clock pulses. Don't confuse these.
 var KEYBOARD_IRQ = 1;  
 
 
