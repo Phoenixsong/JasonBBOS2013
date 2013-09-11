@@ -44,6 +44,12 @@ function CLIconsole() {
         // ... and reset our buffer.
         this.buffer = "";
       }
+      else if (chr == String.fromCharCode(8)){
+        if (this.buffer.length > 0){
+          this.backspace();
+          this.buffer = this.buffer.substr(0, this.buffer.length - 1);
+        }
+      }
       // TODO: Write a case for Ctrl-C.
       else
       {
@@ -76,5 +82,11 @@ function CLIconsole() {
     this.CurrentXPosition = 0;
     this.CurrentYPosition += _DefaultFontSize + _FontHeightMargin;
     // TODO: Handle scrolling.
+  };
+  
+  this.backspace = function(){
+    var offset = _DrawingContext.measureText(this.CurrentFont, this.CurrentFontSize, this.buffer.substr(this.buffer.length - 1));
+    _DrawingContext.clearRect(this.CurrentXPosition - offset, this.CurrentYPosition - _DefaultFontSize, this.CurrentXPosition, this.CurrentYPosition + _FontHeightMargin);
+    this.CurrentXPosition -= offset;
   };
 }
