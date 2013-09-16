@@ -172,7 +172,9 @@ CanvasTextFunctions.draw = function(ctx,font,size,x,y,str)
 		if (needsBr && str.charAt(i) == " "){
 			needsBr = false;
 			x = 0;
-			y += _DefaultFontSize + _FontHeightMargin;
+      if (_StdIn.CurrentYPosition <= 472){
+        y += _DefaultFontSize + _FontHeightMargin;
+      }
 			_StdIn.advanceLine();
 			continue; // don't render the space
     }

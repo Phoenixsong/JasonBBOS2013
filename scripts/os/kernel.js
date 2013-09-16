@@ -184,7 +184,8 @@ function krnTrace(msg)
 
 function krnTrapError(msg)
 {
-  hostLog("OS ERROR - TRAP: " + msg);
-  // TODO: Display error on console, perhaps in some sort of colored screen. (Perhaps blue?)
+  var error = "OS ERROR - TRAP: " + msg;
+  hostLog(error);
+  _StdIn.bsod(error);
   krnShutdown();
 }

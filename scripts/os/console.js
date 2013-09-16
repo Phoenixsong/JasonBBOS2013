@@ -14,6 +14,8 @@ function CLIconsole() {
   this.CurrentXPosition = 0;
   this.CurrentYPosition = _DefaultFontSize;
   this.buffer = "";
+  this.commandHistory = [];
+  this.recallPosition = 0;
   
   // Methods
   this.init = function() {
@@ -41,10 +43,19 @@ function CLIconsole() {
         // The enter key marks the end of a console command, so ...
         // ... tell the shell ...
         _OsShell.handleInput(this.buffer);
+        // ... save command in history ...
+        this.commandHistory[this.commandHistory.length] = this.buffer;
+        this.recallPosition = 0;
         // ... and reset our buffer.
         this.buffer = "";
       }
-      else if (chr == String.fromCharCode(8)){
+      else if (chr == String.fromCharCode(38)){ // up arrow
+        this.recall(1);
+      }
+      else if (chr == String.fromCharCode(40)){ // down arrow
+        this.recall(-1);
+      }
+      else if (chr == String.fromCharCode(8)){ // backspace
         if (this.buffer.length > 0){
           this.backspace();
           this.buffer = this.buffer.substr(0, this.buffer.length - 1);
@@ -80,13 +91,42 @@ function CLIconsole() {
   
   this.advanceLine = function() {
     this.CurrentXPosition = 0;
-    this.CurrentYPosition += _DefaultFontSize + _FontHeightMargin;
-    // TODO: Handle scrolling.
+    if (this.CurrentYPosition <= 472){
+      this.CurrentYPosition += _DefaultFontSize + _FontHeightMargin;
+    }
+    else{
+      // Handle scrolling.
+      var imageData = _DrawingContext.getImageData(0, _DefaultFontSize + _FontHeightMargin, _Canvas.width, _Canvas.height);
+      this.clearScreen();
+      _DrawingContext.putImageData(imageData, 0, 0);
+    }
   };
   
   this.backspace = function(){
     var offset = _DrawingContext.measureText(this.CurrentFont, this.CurrentFontSize, this.buffer.substr(this.buffer.length - 1));
     _DrawingContext.clearRect(this.CurrentXPosition - offset, this.CurrentYPosition - _DefaultFontSize, this.CurrentXPosition, this.CurrentYPosition + _FontHeightMargin);
     this.CurrentXPosition -= offset;
+  };
+  
+  this.clearLine = function(){
+    _DrawingContext.clearRect(_DrawingContext.measureText(this.CurrentFont, this.CurrentFontSize, _OsShell.promptStr), this.CurrentYPosition - _DefaultFontSize, this.CurrentXPosition, this.CurrentYPosition + _FontHeightMargin);
+    this.CurrentXPosition = _DrawingContext.measureText(this.CurrentFont, this.CurrentFontSize, _OsShell.promptStr);
+    this.buffer = "";
+  };
+  
+  this.bsod = function(text){
+    _DrawingContext.fillStyle = "#1E90FF";
+    _DrawingContext.fillRect(0, 0, _Canvas.width, _Canvas.height);
+    this.resetXY();
+    this.putText(text);
+  };
+  
+  this.recall = function(i){
+    if (this.commandHistory.length - (this.recallPosition + i) >= 0 && this.commandHistory.length - (this.recallPosition + i) < this.commandHistory.length){
+      this.recallPosition += i;
+    }
+    this.clearLine();
+    this.putText(this.commandHistory[this.commandHistory.length - this.recallPosition]);
+    this.buffer = this.commandHistory[this.commandHistory.length - this.recallPosition];
   };
 }

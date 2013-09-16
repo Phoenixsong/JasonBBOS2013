@@ -63,7 +63,11 @@ function hostLog(msg, source)
   // Update the log console.
   var taLog = document.getElementById("taLog");
   taLog.value = str + taLog.value;
+  
   // Optionally update a log database or some streaming service.
+  var statusBar = document.getElementById("divTaskbar");
+  var d = new Date();
+  divTaskbar.innerHTML = "Date: " + d.toString() + " ~ Status: " + _Status;
 }
 
 

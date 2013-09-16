@@ -16,6 +16,7 @@ function Shell() {
   this.init        = shellInit;
   this.putPrompt   = shellPutPrompt;
   this.handleInput = shellHandleInput;
+  this.parseInput  = shellParseInput;
   this.execute     = shellExecute;
 }
 
@@ -101,6 +102,20 @@ function shellInit() {
   sc.function = shellJoke;
   this.commandList[this.commandList.length] = sc;
   
+  // status
+  sc = new ShellCommand();
+  sc.command = "status";
+  sc.description = "- Changes the host's status.";
+  sc.function = shellStatus;
+  this.commandList[this.commandList.length] = sc;
+  
+  // bsod
+  sc = new ShellCommand();
+  sc.command = "bsod";
+  sc.description = "- Causes a BSOD.";
+  sc.function = shellBsod;
+  this.commandList[this.commandList.length] = sc;
+  
   // processes - list the running processes and their IDs
   // kill <id> - kills the specified process id.
   
@@ -121,7 +136,7 @@ function shellHandleInput(buffer)
   // Parse the input...
   //
   var userCommand = new UserCommand();
-  userCommand = shellParseInput(buffer);
+  userCommand = this.parseInput(buffer);
   // ... and assign the command and args to local variables.
   var cmd = userCommand.command;
   var args = userCommand.args;
@@ -212,7 +227,6 @@ function shellExecute(fn, args)
   // ... and finally write the prompt again.
   this.putPrompt();
 }
-
 
 //
 // The rest of these functions ARE NOT part of the Shell "class" (prototype, more accurately), 
@@ -398,4 +412,22 @@ function shellJoke()
 {
 	var jokes = ["Some people, when confronted with a problem, think, 'I know, I'll use threads' - and then two they hav erpoblesms.", 'A programmer is told to "go to hell", he finds the worst part of that statement is the "go to"', "How many programmers does it take to screw in a light bulb? None. It's a hardware problem.", "A programmer puts two glasses on his bedside table before going to sleep. A full one, in case he gets thirsty, and an empty one, in case he doesn't.", "There are 10 kinds of people in this world: Those who understand binary, those who don't, and those who weren't expecting a base 3 joke.", 'A programmer is heading out to the grocery store, so his wife tells him "get a gallon of milk, and if they have eggs, get a dozen." He returns with 13 gallons of milk.', 'A SQL statement walks into a bar and sees two tables. It approaches, and asks "may I join you?"', "A web developer walks into a restaurant. He immediately leaves in disgust as the restaurant was laid out in tables.", "There are 2 hard problems in computer science: caching, naming, and off-by-1 errors.", "Why do programmers confuse halloween and christmas? Because Oct 31 = Dec 25."];
   _StdIn.putText(jokes[Math.floor(Math.random()*(jokes.length - 1))]);
+}
+
+function shellStatus(args)
+{
+  if (args.length > 0)
+  {
+    _Status = args[0];
+    _StdIn.putText("Status set.");     
+  }
+  else
+  {
+    _StdIn.putText("Usage: status <string>");
+  }
+}
+
+function shellBsod()
+{
+  _KernelInterruptQueue.enqueue( new Interrupt(-1, -1) );
 }
