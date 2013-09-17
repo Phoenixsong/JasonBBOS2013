@@ -116,6 +116,13 @@ function shellInit() {
   sc.function = shellBsod;
   this.commandList[this.commandList.length] = sc;
   
+  // load
+  sc = new ShellCommand();
+  sc.command = "load";
+  sc.description = "- Check the user code in the textarea for errors.";
+  sc.function = shellLoad;
+  this.commandList[this.commandList.length] = sc;
+  
   // processes - list the running processes and their IDs
   // kill <id> - kills the specified process id.
   
@@ -430,4 +437,17 @@ function shellStatus(args)
 function shellBsod()
 {
   _KernelInterruptQueue.enqueue( new Interrupt(-1, -1) );
+}
+
+function shellLoad()
+{
+  var userInput = document.getElementById("taProgramInput").value;
+  var re = /[ 0-9a-f]/i;
+  for (i = 0; i < userInput.length; i++){
+    if (!re.test(userInput.substr(i, 1))){
+      _StdIn.putText("Invalid user code.");
+      return;
+    }
+  }
+  _StdIn.putText("Valid user code.");
 }
