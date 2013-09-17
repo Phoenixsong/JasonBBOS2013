@@ -436,7 +436,7 @@ function shellStatus(args)
 
 function shellBsod()
 {
-  _KernelInterruptQueue.enqueue( new Interrupt(-1, -1) );
+  krnTrapError("BSOD command issued.");
 }
 
 function shellLoad()
