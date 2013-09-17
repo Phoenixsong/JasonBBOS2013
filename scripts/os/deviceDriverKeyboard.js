@@ -27,7 +27,7 @@ function krnKbdDriverEntry()
 
 function krnKbdDispatchKeyPress(params)
 {
-  // Parse the params.    TODO: Check that they are valid and osTrapError if not.
+  // Parse the params.  Check that they are valid and osTrapError if not.
   var keyCode = params[0];
   var isShifted = params[1];
   krnTrace("Key code:" + keyCode + " shifted:" + isShifted);
@@ -166,5 +166,8 @@ function krnKbdDispatchKeyPress(params)
       }
     }
     _KernelInputQueue.enqueue(chr); 
+  }
+  else{
+    krnTrapError("Unsupported key pressed.");
   }
 }
