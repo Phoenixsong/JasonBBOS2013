@@ -98,7 +98,7 @@ function shellInit() {
   // joke
   sc = new ShellCommand();
   sc.command = "joke";
-  sc.description = "- Displays a joke.";
+  sc.description = "- Displays a randomly picked joke from a list of ten jokes.";
   sc.function = shellJoke;
   this.commandList[this.commandList.length] = sc;
   
@@ -417,7 +417,7 @@ function shellWhereAmI()
 
 function shellJoke()
 {
-	var jokes = ["Some people, when confronted with a problem, think, 'I know, I'll use threads' - and then two they hav erpoblesms.", 'A programmer is told to "go to hell", he finds the worst part of that statement is the "go to"', "How many programmers does it take to screw in a light bulb? None. It's a hardware problem.", "A programmer puts two glasses on his bedside table before going to sleep. A full one, in case he gets thirsty, and an empty one, in case he doesn't.", "There are 10 kinds of people in this world: Those who understand binary, those who don't, and those who weren't expecting a base 3 joke.", 'A programmer is heading out to the grocery store, so his wife tells him "get a gallon of milk, and if they have eggs, get a dozen." He returns with 13 gallons of milk.', 'A SQL statement walks into a bar and sees two tables. It approaches, and asks "may I join you?"', "A web developer walks into a restaurant. He immediately leaves in disgust as the restaurant was laid out in tables.", "There are 2 hard problems in computer science: caching, naming, and off-by-1 errors.", "Why do programmers confuse halloween and christmas? Because Oct 31 = Dec 25."];
+	var jokes = ["Some people, when confronted with a problem, think, 'I know, I'll use threads' - and then two they hav erpoblesms.", 'A programmer is told to go to hell.  He finds that the worst part of that statement is the "go to."', "How many programmers does it take to screw in a light bulb? None. It's a hardware problem.", "A programmer puts two glasses on his bedside table before going to sleep. A full one, in case he gets thirsty, and an empty one, in case he doesn't.", "There are 10 kinds of people in this world: Those who understand binary, those who don't, and those who weren't expecting a base 3 joke.", 'A programmer is heading out to the grocery store, so his wife tells him "get a gallon of milk, and if they have eggs, get a dozen." He returns with 13 gallons of milk.', 'A SQL statement walks into a bar and sees two tables. It approaches, and asks "may I join you?"', "A web developer walks into a restaurant. He immediately leaves in disgust as the restaurant was laid out in tables.", "There are 2 hard problems in computer science: caching, naming, and off-by-1 errors.", "Why do programmers confuse halloween and christmas? Because Oct 31 = Dec 25."];
   _StdIn.putText(jokes[Math.floor(Math.random()*(jokes.length - 1))]);
 }
 
