@@ -169,6 +169,6 @@ function krnKbdDispatchKeyPress(params)
     _KernelInputQueue.enqueue(chr); 
   }
   else{
-    krnTrapError("Unsupported key pressed.");
+    hostLog("Unsupported key pressed", "OS");
   }
 }
