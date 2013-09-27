@@ -32,77 +32,66 @@
   </head>
   
   <body onload="hostInit();">
-    
-    <div id="divMain" style="width:100%;">
-    
-      <div id="divTaskbar" style="padding:4px;background-color:black;color:lime;position:absolute;top:0;left:0;right:0">Date: ????? ~ Status: The OS is not running.</div>
-      
-      <div id="divButtonBar" style="margin:35px 4px 4px 4px;">
-        <input type="button"
-        id = "btnStartOS"
-        name="brnStartOS"
-        class="normal_button"
-        value="Start"
-        tabindex="0"
-        onclick="hostBtnStartOS_click(this);">
+  
+    <div id="divMain" style="width:1347px;margin:35px auto 0 auto;text-align:center;">
+      <div id="divTaskbar" style="padding:4px;background-color:#333;color:lime;position:absolute;top:0;left:0;right:0;">Date: ????? ~ Status: The OS is not running.</div>
         
-        <input type="button"
-        id = "btnHaltOS"
-        name="brnHaltOS"
-        class="normal_button"
-        disabled="disabled"
-        value="Halt"
-        tabindex="1"
-        onclick="hostBtnHaltOS_click(this);">
-        
-        <input type="button"
-        id = "btnReset"
-        name="brnReset"
-        class="normal_button"
-        disabled="disabled"
-        value="Reset"
-        tabindex="2"
-        onclick="hostBtnReset_click(this);">
+      <div id="divColumnOne" style="width:504px;">
+        <div id="divButtonBar">
+          <input type="button" id="btnStartOS" name="brnStartOS" class="normal_button" value="Start" tabindex="0" onclick="hostBtnStartOS_click(this);">
+          <input type="button" id="btnHaltOS" name="brnHaltOS" class="normal_button" disabled="disabled" value="Halt" tabindex="1" onclick="hostBtnHaltOS_click(this);">
+          <input type="button" id="btnReset" name="brnReset" class="normal_button" disabled="disabled" value="Reset" tabindex="2" onclick="hostBtnReset_click(this);">
+        </div>
+        <div id="divConsole" style="width:500px;float:left;">
+          <canvas id="display" width="500px" height="580px" tabindex="3"></canvas>
+        </div>
       </div>
       
-      <div id="divConsole" style="margin:4px; width:500px; height:500px; float:left;">
-        <canvas id="display"
-        width="500px"
-        height="500px"
-        tabindex="3">
-        </canvas>
+      <div id="divColumnTwo" style="float:left;margin-left:15px;margin-top:-21px;">
+        <div id="divLog">
+          <label>
+            Log<br />
+            <textarea name="taLog" id="taLog" rows="26" cols="48"></textarea>
+          </label>
+        </div>
+        <div id="divUserProgramInput">
+          <label>
+            User Program Input<br />
+            <textarea name="taProgramInput" id="taProgramInput" rows="8" cols="48"></textarea>
+          </label>
+        </div>
       </div>
       
-      <div id="divLog" style="margin-left:520px;">
-        <label>
-          Log
-          <br>
-          <textarea name="taLog"
-          id  ="taLog"
-          rows="26"
-          cols="48"
-          ></textarea>
-        </label>
-      </div>
-      
-      <div id="divUserProgramInput" style="margin-left:520px;">
-        <label>
-          User Program Input
-          <br>
-          <textarea name="taProgramInput"
-          id  ="taProgramInput"
-          rows="8"
-          cols="48"
-          ></textarea>
-        </label>
+      <div id="divColumnThree" style="float:left;margin-left:10px;margin-top:-17px;">
+        Memory<br />
+        <div id="divMemory" style="height:351px;margin-bottom:4px;overflow-y:scroll;overflow-x:hidden;background-color:white;">
+          <table id="tableMemory" border="1" style="border-collapse:collapse;width:390px;margin:2px auto 0 auto;"></table>
+        </div>
+        <div id="divCpu">
+          CPU<br />
+          <table id="tableCpu" border="1" style="border-collapse:collapse;width:411px;background-color:white;">
+            <th>PC</th>
+            <th>ACC</th>
+            <th>X</th>
+            <th>Y</th>
+            <th>Z</th>
+            <tr>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+            </tr>
+          </table>
+        </div>
       </div>
       
     </div>
     
     <p class="footerText" style="clear:both;">
-      <br>
+      <br />
       Copyright &copy; 2008 - 2013 No Rights Reserved.
-      <br>
+      <br />
       Reproduction is prohibited without the express written consent of
       Ted Codd, Stevie Ray Vaughan, and Ian Fleming.
     </p>

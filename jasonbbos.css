@@ -1,7 +1,7 @@
 /* alanbbos.css */
 
 body {
-  background: #909193 url(images/linen.png) repeat;
+  background-color: lightgray;
   font-family: Helvetica, Verdana, Arial, sans-serif;
 	font-size: 12pt;
 	font-weight: normal;
@@ -31,7 +31,7 @@ h3 {
 }
 
 #display {
-	background-color:#DFDBC3;
+	background-color:white;
 	border: 2px solid red; 
 	cursor: default;
 }
