@@ -12,7 +12,7 @@ function MemoryManager(){
     for (var i = 0; i < _MemoryTotalSize / _MemoryBlockSize; i++){
       this.slots[i] = null;
     }
-  }
+  };
   // sets pcb's memory values and places it in slots
   this.allocate = function(pcb){
     for (var i = 0; i < this.slots.length; i++){
@@ -29,9 +29,13 @@ function MemoryManager(){
       }
     }
     hostLog("Out of memory", "OS"); // only executes if no space was available
-  }
+  };
   // writes to memory, adding the relocation register from the pcb to the address
   this.write = function(address, value, pcb){
-    
-  }
+    _Memory[address + pcb.base] = value;
+  };
+  // reads from memory, adding the relocation register from the pcb to the address
+  this.read = function(address, pcb){
+    return _Memory[address + pcb.base];
+  };
 }
