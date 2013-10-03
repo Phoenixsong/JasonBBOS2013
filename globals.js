@@ -38,6 +38,9 @@ var _FontHeightMargin = 4;        // Additional space added to font size when ad
 
 var _Status = "The OS is running.";
 
+var _MemoryTotalSize = 256;
+var _MemoryBlockSize = 256;
+
 // Default the OS trace to be on.
 var _Trace = true;
 
