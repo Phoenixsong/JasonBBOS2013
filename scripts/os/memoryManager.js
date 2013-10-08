@@ -32,10 +32,19 @@ function MemoryManager(){
   };
   // writes to memory, adding the relocation register from the pcb to the address
   this.write = function(address, value, pcb){
-    _Memory[address + pcb.base] = value;
+    if (address < pcb.limit){
+      _Memory[address + pcb.base] = value;
+    }
+    else{
+      hostLog("Invalid memory access", "OS");
+    }
   };
   // reads from memory, adding the relocation register from the pcb to the address
   this.read = function(address, pcb){
-    return _Memory[address + pcb.base];
+    if (address < pcb.limit){
+      return _Memory[address + pcb.base];
+    }
+    hostLog("Invalid memory access", "OS");
+    return "00";
   };
 }

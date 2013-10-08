@@ -34,5 +34,77 @@ function Cpu() {
     krnTrace("CPU cycle");
     // TODO: Accumulate CPU usage and profiling statistics here.
     // Do the real work here. Be sure to set this.isExecuting appropriately.
+    this.execute(this.fetch());
+  };
+  
+  this.fetch = function(){
+    return _MemoryManager.read(this.PC, _CurrentProcess);
+  };
+  
+  // call the function with the same name as the op code
+  // underscore prepended because function names cannot start with numbers
+  this.execute = function(opCode){
+    try{
+      this["_" + opCode]();
+    }
+    catch(e){
+      this._00();
+    }
+  }
+  
+  this._A9 = function(){
+    
+  };
+  
+  this._AD = function(){
+    
+  };
+  
+  this._8D = function(){
+    
+  };
+  
+  this._6D = function(){
+    
+  };
+  
+  this._A2 = function(){
+    
+  };
+  
+  this._AE = function(){
+    
+  };
+  
+  this._A0 = function(){
+    
+  };
+  
+  this._AC = function(){
+    
+  };
+  
+  this._EA = function(){
+    
+  };
+  
+  this._00 = function(){
+    
+  };
+  
+  this._EC = function(){
+    
+  };
+  
+  this._D0 = function(){
+    
+  };
+  
+  this._EE = function(){
+    
+  };
+  
+  this._FF = function(){
+    
   };
 }
