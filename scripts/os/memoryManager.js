@@ -25,10 +25,11 @@ function MemoryManager(){
           pcb.base = i * _MemoryBlockSize - 1; // since the memory array is 0 based
         }
         pcb.limit = _MemoryBlockSize;
-        return;
+        return true;
       }
     }
     hostLog("Out of memory", "OS"); // only executes if no space was available
+    return false;
   };
   // writes to memory, adding the relocation register from the pcb to the address
   this.write = function(address, value, pcb){

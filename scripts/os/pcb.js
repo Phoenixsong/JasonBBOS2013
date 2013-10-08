@@ -9,6 +9,7 @@ function Pcb(){
   // Properties
   this.pc = 0; // program counter
   this.acc = 0; // accumulator
+  this.pid = 0; // process id
   this.x = 0; // x register
   this.y = 0; // y register
   this.z = 0; // z register

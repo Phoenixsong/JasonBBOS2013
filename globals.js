@@ -44,6 +44,7 @@ var _MemoryBlockSize = 256;
 var _MemoryManager = null;
 
 var _CurrentProcess = null;
+var _LastPID = 0;
 
 // Default the OS trace to be on.
 var _Trace = true;

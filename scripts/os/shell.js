@@ -441,6 +441,7 @@ function shellBsod()
 
 function shellLoad()
 {
+  // validate code
   var userInput = document.getElementById("taProgramInput").value;
   var re = /[ 0-9a-f]/i;
   for (i = 0; i < userInput.length; i++){
@@ -449,5 +450,23 @@ function shellLoad()
       return;
     }
   }
-  _StdIn.putText("Valid user code.");
+  
+  // create PCB first, so the MMU can check if there's available memory for the code
+  var pcb = new Pcb();
+  if (_MemoryManager.allocate(pcb)){
+    // assign PID to PCB and increment the PID for the next process
+    pcb.pid = _LastPID;
+    _LastPID++;
+    // put the code into memory
+    userInput = userInput.split(/\s/);
+    for (i = 0; i < userInput.length; i++){
+      _MemoryManager.write(i, userInput[i], pcb);
+    }
+    // return PID to console
+    _StdIn.putText("Program loaded with PID " + pcb.pid);
+  }
+  else{
+    _StdIn.putText("No memory available to load program.");
+    return;
+  }
 }
