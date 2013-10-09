@@ -123,6 +123,13 @@ function shellInit() {
   sc.function = shellLoad;
   this.commandList[this.commandList.length] = sc;
   
+  // run
+  sc = new ShellCommand();
+  sc.command = "run";
+  sc.description = "<PID> - Runs the program with the given Process ID.";
+  sc.function = shellRun;
+  this.commandList[this.commandList.length] = sc;
+  
   // processes - list the running processes and their IDs
   // kill <id> - kills the specified process id.
   
@@ -454,9 +461,10 @@ function shellLoad()
   // create PCB first, so the MMU can check if there's available memory for the code
   var pcb = new Pcb();
   if (_MemoryManager.allocate(pcb)){
-    // assign PID to PCB and increment the PID for the next process
-    pcb.pid = _LastPID;
-    _LastPID++;
+    // assign pid based on how many processes have been loaded
+    pcb.pid = _Processes.length;
+    // add pcb to the list of processes
+    _Processes.push(pcb);
     // put the code into memory
     userInput = userInput.split(/\s/);
     for (i = 0; i < userInput.length; i++){
@@ -468,5 +476,25 @@ function shellLoad()
   else{
     _StdIn.putText("No memory available to load program.");
     return;
+  }
+}
+
+function shellRun(args)
+{
+  if (args.length > 0)
+  {
+    if (_Processes[args[0]] != null){
+      _CurrentProcess = _Processes[args[0]];
+    }
+    else{
+      _StdIn.putText("Invalid PID.");
+      return;
+    }
+    _CurrentProcess.state = "running";
+    _CPU.isExecuting = true;
+  }
+  else
+  {
+    _StdIn.putText("Usage: run <PID>");
   }
 }
