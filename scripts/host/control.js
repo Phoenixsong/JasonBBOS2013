@@ -61,8 +61,22 @@ function hostLog(msg, source)
   var str = "[" + clock + "~" + now + "][" + source + "]:" + msg + "\n";
   
   // Update the log console.
-  var taLog = document.getElementById("taLog");
-  taLog.value = str + taLog.value;
+  if (msg == "Idle"){
+    var taLog = document.getElementById("taLog");
+    var latestMessageIdle = taLog.value.match(/^\[[0-9~]*?\]\[OS\]:Idle( \[(\d*?)\])?/);
+    if (latestMessageIdle.length == 1){
+      taLog.value = str + "[2]" + taLog.value.substring(latestMessageIdle[0].length);
+    }
+    else if (latestMessageIdle.length == 3){
+      taLog.value = str + "[" + latestMessageIdle[2] + "]" + taLog.value.substring(latestMessageIdle[0].length);
+    }
+    else{
+      taLog.value = str + taLog.value;
+    }
+  }
+  else{
+    taLog.value = str + taLog.value;
+  }
   
   // Optionally update a log database or some streaming service.
   var statusBar = document.getElementById("divTaskbar");
