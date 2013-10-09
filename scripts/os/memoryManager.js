@@ -7,12 +7,15 @@
 function MemoryManager(){
   // keeps tracks of which blocks are allocated
   this.slots = new Array();
-  // initialize slots
+  
   this.init = function(){
+    // initialize slots array
     for (var i = 0; i < _MemoryTotalSize / _MemoryBlockSize; i++){
       this.slots[i] = null;
     }
+    memoryTableInit(); // defined in control.js
   };
+  
   // sets pcb's memory values and places it in slots
   this.allocate = function(pcb){
     for (var i = 0; i < this.slots.length; i++){
@@ -31,15 +34,18 @@ function MemoryManager(){
     hostLog("Out of memory", "OS"); // only executes if no space was available
     return false;
   };
+  
   // writes to memory, adding the relocation register from the pcb to the address
   this.write = function(address, value, pcb){
     if (address < pcb.limit){
       _Memory[address + pcb.base] = value;
+      memoryTableUpdate(address + pcb.base, value); // defined in control.js
     }
     else{
       hostLog("Invalid memory access", "OS");
     }
   };
+  
   // reads from memory, adding the relocation register from the pcb to the address
   this.read = function(address, pcb){
     if (address < pcb.limit){

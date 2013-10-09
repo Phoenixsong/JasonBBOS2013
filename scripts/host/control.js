@@ -70,6 +70,36 @@ function hostLog(msg, source)
   divTaskbar.innerHTML = "Date: " + d.toString() + " ~ Status: " + _Status;
 }
 
+function memoryTableInit(){
+  // initialize the memory display
+  var tableString = "";
+  for (var i = 0; i < _Memory.length; i++){
+    if (i % 8 == 0){
+      if (tableString.length == 0){
+        tableString += "<tr>";
+      }
+      else{
+        tableString += "</tr><tr>";
+      }
+      tableString += "<th>0x";
+      // pad the memory number with leading zeroes
+      for (var j = i.toString(16).length; j < 3; j++){
+        tableString += "0";
+      }
+      tableString += i.toString(16);
+      tableString += "</th>";
+    }
+    tableString += "<td>00</td>";
+  }
+  tableString += "</tr>";
+  $("#tableMemory").html(tableString);
+}
+
+function memoryTableUpdate(index, value){
+  var tr = Math.floor(index / 8);
+  var td = index % 8;
+  $("#tableMemory tr").eq(tr).children("td").eq(td).html(value);
+}
 
 //
 // Control Events
