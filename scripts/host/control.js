@@ -101,6 +101,13 @@ function memoryTableUpdate(index, value){
   $("#tableMemory tr").eq(tr).children("td").eq(td).html(value);
 }
 
+function cpuTableUpdate(){
+  var cells = ["PC", "Acc", "Xreg", "Yreg", "Zflag"];
+  for (var i = 0; i < cells.length; i++){
+    $("#tableCpu tr td").eq(i).html(_CPU[cells[i]]);
+  }
+}
+
 //
 // Control Events
 //

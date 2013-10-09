@@ -27,7 +27,8 @@ function Cpu() {
     this.Xreg  = 0;
     this.Yreg  = 0;
     this.Zflag = 0;      
-    this.isExecuting = false;  
+    this.isExecuting = false;
+    cpuTableUpdate(); // defined in control.js
   };
   
   this.cycle = function() {
@@ -35,6 +36,7 @@ function Cpu() {
     // TODO: Accumulate CPU usage and profiling statistics here.
     // Do the real work here. Be sure to set this.isExecuting appropriately.
     this.execute(this.fetch());
+    cpuTableUpdate(); // defined in control.js
   };
   
   this.fetch = function(){
