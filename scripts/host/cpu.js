@@ -52,10 +52,14 @@ function Cpu() {
     catch(e){
       this._00();
     }
-  }
+  };
+  
+  this.getOperand = function(){
+    return _MemoryManager.read(this.PC++, _CurrentProcess);
+  };
   
   this._A9 = function(){
-    
+    _CPU.Acc = parseInt(getOperand(), 16);
   };
   
   this._AD = function(){
