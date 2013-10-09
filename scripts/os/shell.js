@@ -119,7 +119,7 @@ function shellInit() {
   // load
   sc = new ShellCommand();
   sc.command = "load";
-  sc.description = "- Check the user code in the textarea for errors.";
+  sc.description = "- Attempts to load the program in the user input box into memory.";
   sc.function = shellLoad;
   this.commandList[this.commandList.length] = sc;
   
