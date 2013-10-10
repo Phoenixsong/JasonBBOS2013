@@ -54,6 +54,7 @@ function Cpu() {
     }
   };
   
+  // return object in memory at the PC and increment the PC for the next call
   this.getOperand = function(){
     var operand = _MemoryManager.read(this.PC++, _CurrentProcess);
     if (operand != null){
