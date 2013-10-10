@@ -112,7 +112,7 @@ function Cpu() {
   };
   
   this._A2 = function(){
-    this.Xreg = parseInt(getOperand(), 16);
+    this.Xreg = parseInt(this.getOperand(), 16);
   };
   
   this._AE = function(){
@@ -127,7 +127,7 @@ function Cpu() {
   };
   
   this._A0 = function(){
-    this.Yreg = parseInt(getOperand(), 16);
+    this.Yreg = parseInt(this.getOperand(), 16);
   };
   
   this._AC = function(){
@@ -197,7 +197,7 @@ function Cpu() {
   this._D0 = function(){
     var bytes = parseInt(this.getOperand(), 16);
     if (this.Zflag == 0){
-      this.PC = this.PC + bytes;
+      this.PC = (this.PC + bytes) % _MemoryBlockSize; // allows PC to wrap around to a lower value
     }
   };
   
@@ -228,7 +228,7 @@ function Cpu() {
       var stringToPrint = "";
       while (memoryContent != "00"){
         stringToPrint += String.fromCharCode(parseInt(memoryContent, 16));
-        memoryContent = _MemoryManager.read(++address, _CurrentProccess);
+        memoryContent = _MemoryManager.read(++address, _CurrentProcess);
       }
       _StdIn.putText(stringToPrint);
     }
