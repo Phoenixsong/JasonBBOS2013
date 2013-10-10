@@ -111,7 +111,7 @@ function Cpu() {
   };
   
   this._A2 = function(){
-    
+    this.Xreg = parseInt(getOperand(), 16);
   };
   
   this._AE = function(){
