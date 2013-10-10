@@ -146,8 +146,9 @@ function Cpu() {
   };
   
   this._00 = function(){
-    var cpuVars = ["PC", "Acc", "", "Xreg", "Yreg", "Zflag"];
-    var pcbVars = ["PC", "Acc", "PID", "X", "Y", "Z", "Base", "Limit"];
+    _CurrentProcess.state = "terminated";
+    var cpuVars = ["", "PC", "Acc", "", "Xreg", "Yreg", "Zflag"];
+    var pcbVars = ["State", "PC", "Acc", "PID", "X", "Y", "Z", "Base", "Limit"];
     // update the pcb's registers with the cpu's
     for (var i = 0; i < cpuVars.length; i++){
       if (cpuVars[i].length > 0){
