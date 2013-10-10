@@ -38,7 +38,7 @@ function MemoryManager(){
   // writes to memory, adding the relocation register from the pcb to the address
   // assume that addresses passed in as a string are hex and convert them to dec
   this.write = function(address, value, pcb){
-    if (address instanceof String){
+    if (typeof address === "string" || address instanceof String){
       address = parseInt(address, 16);
     }
     if (address < pcb.limit){
@@ -55,7 +55,7 @@ function MemoryManager(){
   // reads from memory, adding the relocation register from the pcb to the address
   // assume that addresses passed in as a string are hex and convert them to dec
   this.read = function(address, pcb){
-    if (address instanceof String){
+    if (typeof address === "string" || address instanceof String){
       address = parseInt(address, 16);
     }
     if (address < pcb.limit){

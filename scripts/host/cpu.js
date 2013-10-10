@@ -65,15 +65,20 @@ function Cpu() {
     }
   };
   
+  // addresses span two bytes; grab both and return them concatenated correctly
+  this.getAddress = function(){
+    // address is out of order in opcode stream
+    var address = this.getOperand();
+    address = this.getOperand() + address;
+    return address;
+  }
+  
   this._A9 = function(){
     _CPU.Acc = parseInt(this.getOperand(), 16);
   };
   
   this._AD = function(){
-    // address is out of order in opcode stream
-    var address = getOperand();
-    address = getOperand() + address;
-    var memoryContent = _MemoryManager.read(address, _CurrentProcess);
+    var memoryContent = _MemoryManager.read(this.getAddress(), _CurrentProcess);
     if (memoryContent != null){
       this.Acc = parseInt(memoryContent);
     }
@@ -84,7 +89,14 @@ function Cpu() {
   };
   
   this._8D = function(){
-    
+    var accToBeStored = this.Acc.toString(16).toUpperCase();
+    if (accToBeStored.length == 1){
+      accToBeStored = "0" + accToBeStored;
+    }
+    if (!_MemoryManager.write(this.getAddress(), accToBeStored, _CurrentProcess)){
+      hostLog("Terminating process early", "OS");
+      this._00();
+    }
   };
   
   this._6D = function(){
