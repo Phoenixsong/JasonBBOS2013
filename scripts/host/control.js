@@ -126,7 +126,17 @@ function memoryTableUpdate(index, value){
 function cpuTableUpdate(){
   var cells = ["PC", "Acc", "Xreg", "Yreg", "Zflag"];
   for (var i = 0; i < cells.length; i++){
-    $("#tableCpu tr td").eq(i).html(_CPU[cells[i]]);
+    if (cells[i] == "PC"){
+      var PC = _CPU[cells[i]].toString(16);
+      while (PC.length < 3){
+        PC = "0" + PC;
+      }
+      PC = "0x" + PC;
+      $("#tableCpu tr td").eq(i).html(PC);
+    }
+    else{
+      $("#tableCpu tr td").eq(i).html(_CPU[cells[i]]);
+    }
   }
 }
 

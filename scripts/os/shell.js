@@ -126,7 +126,7 @@ function shellInit() {
   // run
   sc = new ShellCommand();
   sc.command = "run";
-  sc.description = "<PID> - Runs the program with the given Process ID.";
+  sc.description = "<PID> - Runs the program loaded into memory with the given Process ID.";
   sc.function = shellRun;
   this.commandList[this.commandList.length] = sc;
   
@@ -491,6 +491,7 @@ function shellRun(args)
       return;
     }
     _CurrentProcess.state = "running";
+    _CPU.init();
     _CPU.isExecuting = true;
   }
   else

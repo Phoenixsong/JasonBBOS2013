@@ -59,7 +59,7 @@ function Cpu() {
   };
   
   this._A9 = function(){
-    _CPU.Acc = parseInt(getOperand(), 16);
+    _CPU.Acc = parseInt(this.getOperand(), 16);
   };
   
   this._AD = function(){
