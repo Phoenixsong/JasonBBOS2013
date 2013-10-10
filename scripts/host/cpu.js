@@ -141,7 +141,7 @@ function Cpu() {
   };
   
   this._EA = function(){
-    
+    this.PC++;
   };
   
   this._00 = function(){
