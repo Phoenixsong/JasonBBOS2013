@@ -40,9 +40,11 @@ function MemoryManager(){
     if (address < pcb.limit){
       _Memory[address + pcb.base] = value;
       memoryTableUpdate(address + pcb.base, value); // defined in control.js
+      return true;
     }
     else{
       hostLog("Invalid memory access", "OS");
+      return false;
     }
   };
   
@@ -52,6 +54,6 @@ function MemoryManager(){
       return _Memory[address + pcb.base];
     }
     hostLog("Invalid memory access", "OS");
-    return "00";
+    return null;
   };
 }

@@ -55,7 +55,10 @@ function Cpu() {
   };
   
   this.getOperand = function(){
-    return _MemoryManager.read(this.PC++, _CurrentProcess);
+    var operand = _MemoryManager.read(this.PC++, _CurrentProcess);
+    if (operand != null){
+      return _MemoryManager.read(this.PC++, _CurrentProcess);
+    }
   };
   
   this._A9 = function(){
