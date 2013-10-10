@@ -74,7 +74,7 @@ function Cpu() {
   }
   
   this._A9 = function(){
-    _CPU.Acc = parseInt(this.getOperand(), 16);
+    this.Acc = parseInt(this.getOperand(), 16);
   };
   
   this._AD = function(){
@@ -174,11 +174,23 @@ function Cpu() {
     }
     hostLog(logString, "OS");
     // stop the cpu from executing
-    _CPU.isExecuting = false;
+    this.isExecuting = false;
   };
   
   this._EC = function(){
-    
+    var memoryContent = _MemoryManager.read(this.getAddress(), _CurrentProcess);
+    if (memoryContent != null){
+      if (parseInt(memoryContent) == this.Xreg){
+        this.Zflag = 1;
+      }
+      else{
+        this.Zflag = 0;
+      }
+    }
+    else{
+      hostLog("Terminating process early", "OS");
+      this._00();
+    }
   };
   
   this._D0 = function(){
