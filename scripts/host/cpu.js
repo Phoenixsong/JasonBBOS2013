@@ -139,7 +139,16 @@ function Cpu() {
       if (insertDelimiter){
         logString += ", ";
       }
-      logString += pcbVars[i] + "=" + _CurrentProcess[pcbVars[i].toLowerCase()];
+      if (pcbVars[i] == "PC"){
+        var PC = _CurrentProcess[pcbVars[i].toLowerCase()].toString(16).toUpperCase();
+        while (PC.length < 3){
+          PC = "0" + PC;
+        }
+        logString += "PC=0x" + PC;
+      }
+      else{
+        logString += pcbVars[i] + "=" + _CurrentProcess[pcbVars[i].toLowerCase()];
+      }
       insertDelimiter = true;
     }
     hostLog(logString, "OS");

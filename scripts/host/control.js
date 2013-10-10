@@ -108,7 +108,7 @@ function memoryTableInit(){
       for (var j = i.toString(16).length; j < 3; j++){
         tableString += "0";
       }
-      tableString += i.toString(16);
+      tableString += i.toString(16).toUpperCase();
       tableString += "</th>";
     }
     tableString += "<td>00</td>";
@@ -127,7 +127,7 @@ function cpuTableUpdate(){
   var cells = ["PC", "Acc", "Xreg", "Yreg", "Zflag"];
   for (var i = 0; i < cells.length; i++){
     if (cells[i] == "PC"){
-      var PC = _CPU[cells[i]].toString(16);
+      var PC = _CPU[cells[i]].toString(16).toUpperCase();
       while (PC.length < 3){
         PC = "0" + PC;
       }
