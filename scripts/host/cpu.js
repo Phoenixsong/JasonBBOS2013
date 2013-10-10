@@ -57,7 +57,11 @@ function Cpu() {
   this.getOperand = function(){
     var operand = _MemoryManager.read(this.PC++, _CurrentProcess);
     if (operand != null){
-      return _MemoryManager.read(this.PC++, _CurrentProcess);
+      return operand;
+    }
+    else{
+      hostLog("Terminating process early", "OS");
+      this._00();
     }
   };
   
@@ -66,7 +70,17 @@ function Cpu() {
   };
   
   this._AD = function(){
-    
+    // address is out of order in opcode stream
+    var address = getOperand();
+    address = getOperand() + address;
+    var memoryContent = _MemoryManager.read(address, _CurrentProcess);
+    if (memoryContent != null){
+      this.Acc = parseInt(memoryContent);
+    }
+    else{
+      hostLog("Terminating process early", "OS");
+      this._00();
+    }
   };
   
   this._8D = function(){

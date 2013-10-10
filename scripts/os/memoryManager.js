@@ -36,7 +36,11 @@ function MemoryManager(){
   };
   
   // writes to memory, adding the relocation register from the pcb to the address
+  // assume that addresses passed in as a string are hex and convert them to dec
   this.write = function(address, value, pcb){
+    if (address instanceof String){
+      address = parseInt(address, 16);
+    }
     if (address < pcb.limit){
       _Memory[address + pcb.base] = value;
       memoryTableUpdate(address + pcb.base, value); // defined in control.js
@@ -49,7 +53,11 @@ function MemoryManager(){
   };
   
   // reads from memory, adding the relocation register from the pcb to the address
+  // assume that addresses passed in as a string are hex and convert them to dec
   this.read = function(address, pcb){
+    if (address instanceof String){
+      address = parseInt(address, 16);
+    }
     if (address < pcb.limit){
       return _Memory[address + pcb.base];
     }
