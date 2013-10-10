@@ -115,7 +115,14 @@ function Cpu() {
   };
   
   this._AE = function(){
-    
+    var memoryContent = _MemoryManager.read(this.getAddress(), _CurrentProcess);
+    if (memoryContent != null){
+      this.Xreg = parseInt(memoryContent);
+    }
+    else{
+      hostLog("Terminating process early", "OS");
+      this._00();
+    }
   };
   
   this._A0 = function(){
