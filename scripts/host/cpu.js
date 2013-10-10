@@ -201,7 +201,20 @@ function Cpu() {
   };
   
   this._EE = function(){
-    
+    var address = this.getAddress();
+    var memoryContent = _MemoryManager.read(address, _CurrentProcess);
+    if (memoryContent != null){
+      // unfortunately, javascript can't do non decimal math, so convert to dec, add, then convert back to hex
+      memoryContent = (parseInt(memoryContent, 16) + 1).toString(16).toUpperCase();
+      if (memoryContent.length == 1){
+        memoryContent = "0" + memoryContent;
+      }
+      _MemoryManager.write(address, memoryContent, _CurrentProcess);
+    }
+    else{
+      hostLog("Terminating process early", "OS");
+      this._00();
+    }
   };
   
   this._FF = function(){
