@@ -61,14 +61,22 @@ function hostLog(msg, source)
   var str = "[" + clock + "~" + now + "][" + source + "]:" + msg + "\n";
   
   // Update the log console.
+  var taLog = document.getElementById("taLog");
+  // stack idle messages
   if (msg == "Idle"){
-    var taLog = document.getElementById("taLog");
+    // results in array with index 0: entire idle line, index 1: bracketed repeat number, index 2: repeat number without brackets
     var latestMessageIdle = taLog.value.match(/^\[[0-9~]*?\]\[OS\]:Idle( \[(\d*?)\])?/);
-    if (latestMessageIdle.length == 1){
-      taLog.value = str + "[2]" + taLog.value.substring(latestMessageIdle[0].length);
-    }
-    else if (latestMessageIdle.length == 3){
-      taLog.value = str + "[" + latestMessageIdle[2] + "]" + taLog.value.substring(latestMessageIdle[0].length);
+    // check if the last message was an idle message
+    if (latestMessageIdle != null){
+      // if it was, check to see if it was a stack of idle messages (i.e. it had a repeat number, e.g. Idle [2])
+      if (latestMessageIdle[2] == null){
+        // last idle message wasn't a stack; the new idle message will turn it into a stack of 2
+        taLog.value = str.substring(0, str.length - 1) + " [2]" + taLog.value.substring(latestMessageIdle[0].length);
+      }
+      else{
+        // last idle message was a stack; the new idle message will make the stack one message higher
+        taLog.value = str.substring(0, str.length - 1) + " [" + (parseInt(latestMessageIdle[2]) + 1) + "]" + taLog.value.substring(latestMessageIdle[0].length);
+      }
     }
     else{
       taLog.value = str + taLog.value;
