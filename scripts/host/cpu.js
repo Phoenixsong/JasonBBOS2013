@@ -126,7 +126,7 @@ function Cpu() {
   };
   
   this._A0 = function(){
-    
+    this.Yreg = parseInt(getOperand(), 16);
   };
   
   this._AC = function(){
