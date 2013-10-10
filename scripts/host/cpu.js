@@ -219,6 +219,20 @@ function Cpu() {
   };
   
   this._FF = function(){
-    
+    if (this.Xreg == 1){
+      _StdIn.putText(this.Yreg.toString());
+    }
+    else if (this.Xreg == 2){
+      var address = this.Yreg;
+      var memoryContent = _MemoryManager.read(address, _CurrentProcess);
+      var stringToPrint = "";
+      while (memoryContent != "00"){
+        stringToPrint += String.fromCharCode(parseInt(memoryContent, 16));
+        memoryContent = _MemoryManager.read(++address, _CurrentProccess);
+      }
+      _StdIn.putText(stringToPrint);
+    }
+    _StdIn.advanceLine();
+    _OsShell.putPrompt();
   };
 }
