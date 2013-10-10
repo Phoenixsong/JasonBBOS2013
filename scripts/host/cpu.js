@@ -194,7 +194,10 @@ function Cpu() {
   };
   
   this._D0 = function(){
-    
+    var bytes = parseInt(this.getOperand(), 16);
+    if (this.Zflag == 0){
+      this.PC = this.PC + bytes;
+    }
   };
   
   this._EE = function(){
