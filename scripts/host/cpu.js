@@ -100,7 +100,14 @@ function Cpu() {
   };
   
   this._6D = function(){
-    
+    var memoryContent = _MemoryManager.read(this.getAddress(), _CurrentProcess);
+    if (memoryContent != null){
+      this.Acc += parseInt(memoryContent, 16);
+    }
+    else{
+      hostLog("Terminating process early", "OS");
+      this._00();
+    }
   };
   
   this._A2 = function(){
