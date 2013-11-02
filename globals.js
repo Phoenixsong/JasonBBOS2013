@@ -39,7 +39,7 @@ var _FontHeightMargin = 4;        // Additional space added to font size when ad
 var _Status = "The OS is running.";
 
 var _Memory = null;
-var _MemoryTotalSize = 256;
+var _MemoryTotalSize = 768;
 var _MemoryBlockSize = 256;
 var _MemoryManager = null;
 
