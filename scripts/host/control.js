@@ -140,6 +140,28 @@ function cpuTableUpdate(){
   }
 }
 
+function rqTableUpdate(){
+  var cells = ["pid", "state", "pc", "acc", "x", "y", "z", "base", "limit"];
+  $("#tableReadyQueue tr").slice(1).remove(); // remove existing pcb rows
+  for (var i = 0; i < _ReadyQueue.getSize(); i++){
+    $("#tableReadyQueue").append("<tr></tr>");
+    var newRow = $("#tableReadyQueue tr").eq(1);
+    for (var j = 0; j < cells.length; j++){
+      if (cells[j] == "pc"){
+        var PC = _CurrentProcess[cells[j]].toString(16).toUpperCase();
+        while (PC.length < 3){
+          PC = "0" + PC;
+        }
+        PC = "0x" + PC;
+        newRow.append("<td>" + PC + "</td>");
+      }
+      else{
+        newRow.append("<td>" + _CurrentProcess[cells[j]] + "</td>");
+      }
+    }
+  }
+}
+
 //
 // Control Events
 //
@@ -165,6 +187,8 @@ function hostBtnStartOS_click(btn)
   _MemoryManager.init();
   
   _Processes = new Array();
+  
+  _ReadyQueue = new Queue();
   
   // ... then set the host clock pulse ...
   _hardwareClockID = setInterval(hostClockPulse, CPU_CLOCK_INTERVAL);

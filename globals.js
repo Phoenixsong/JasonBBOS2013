@@ -45,6 +45,7 @@ var _MemoryManager = null;
 
 var _CurrentProcess = null;
 var _Processes = null;
+var _ReadyQueue = null;
 
 // Default the OS trace to be on.
 var _Trace = true;

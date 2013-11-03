@@ -484,12 +484,13 @@ function shellRun(args)
   if (args.length > 0)
   {
     if (_Processes[args[0]] != null){
-      _CurrentProcess = _Processes[args[0]];
+      _ReadyQueue.enqueue(_Processes[args[0]]);
     }
     else{
       _StdIn.putText("Invalid PID.");
       return;
     }
+    _CurrentProcess = _ReadyQueue.dequeue();
     _CurrentProcess.state = "running";
     _CPU.init();
     _CPU.isExecuting = true;

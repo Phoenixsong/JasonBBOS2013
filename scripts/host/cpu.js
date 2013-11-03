@@ -37,6 +37,7 @@ function Cpu() {
     // Do the real work here. Be sure to set this.isExecuting appropriately.
     this.execute(this.fetch());
     cpuTableUpdate(); // defined in control.js
+    rqTableUpdate(); // defined in control.js
   };
   
   this.fetch = function(){
