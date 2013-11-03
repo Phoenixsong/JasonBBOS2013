@@ -91,7 +91,7 @@ function CLIconsole() {
   
   this.advanceLine = function() {
     this.CurrentXPosition = 0;
-    if (this.CurrentYPosition <= 472){
+    if (this.CurrentYPosition <= 557){
       this.CurrentYPosition += _DefaultFontSize + _FontHeightMargin;
     }
     else{

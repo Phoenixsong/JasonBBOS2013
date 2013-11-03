@@ -172,7 +172,7 @@ CanvasTextFunctions.draw = function(ctx,font,size,x,y,str)
 		if (needsBr && str.charAt(i) == " "){
 			needsBr = false;
 			x = 0;
-      if (_StdIn.CurrentYPosition <= 472){
+      if (_StdIn.CurrentYPosition <= 557){
         y += _DefaultFontSize + _FontHeightMargin;
       }
 			_StdIn.advanceLine();
