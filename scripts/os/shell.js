@@ -130,6 +130,13 @@ function shellInit() {
   sc.function = shellRun;
   this.commandList[this.commandList.length] = sc;
   
+  // runall
+  sc = new ShellCommand();
+  sc.command = "runall";
+  sc.description = "- Starts running all programs loaded into memory simultaneously.";
+  sc.function = shellRunAll;
+  this.commandList[this.commandList.length] = sc;
+  
   // processes - list the running processes and their IDs
   // kill <id> - kills the specified process id.
   
@@ -498,5 +505,23 @@ function shellRun(args)
   else
   {
     _StdIn.putText("Usage: run <PID>");
+  }
+}
+
+function shellRunAll(args)
+{
+  _ReadyQueue = new Queue();
+  for (var i = 0; i < _Processes.length; i++){
+    _ReadyQueue.enqueue(_Processes[i]);
+  }
+  if (_ReadyQueue.getSize() != 0){
+    _CurrentProcess = _ReadyQueue.dequeue();
+    _CurrentProcess.state = "running";
+    _CPU.init();
+    _CPU.isExecuting = true;
+  }
+  else{
+    _StdIn.putText("No programs loaded.");
+    return;
   }
 }

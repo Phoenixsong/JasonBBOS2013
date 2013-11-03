@@ -176,8 +176,16 @@ function Cpu() {
       insertDelimiter = true;
     }
     hostLog(logString, "OS");
-    // stop the cpu from executing
-    this.isExecuting = false;
+    // switch to the next program in the ready queue, or stop executing
+    if (_ReadyQueue.getSize() != 0){
+      _CurrentProcess = _ReadyQueue.dequeue();
+      _CurrentProcess.state = "running";
+      _CPU.init();
+      this.isExecuting = true;
+    }
+    else{
+      this.isExecuting = false;
+    }
   };
   
   this._EC = function(){

@@ -145,10 +145,10 @@ function rqTableUpdate(){
   $("#tableReadyQueue tr").slice(1).remove(); // remove existing pcb rows
   for (var i = 0; i < _ReadyQueue.getSize(); i++){
     $("#tableReadyQueue").append("<tr></tr>");
-    var newRow = $("#tableReadyQueue tr").eq(1);
+    var newRow = $("#tableReadyQueue tr").slice($("#tableReadyQueue tr").size() - 1);
     for (var j = 0; j < cells.length; j++){
       if (cells[j] == "pc"){
-        var PC = _CurrentProcess[cells[j]].toString(16).toUpperCase();
+        var PC = _ReadyQueue.q[i][cells[j]].toString(16).toUpperCase();
         while (PC.length < 3){
           PC = "0" + PC;
         }
@@ -156,7 +156,7 @@ function rqTableUpdate(){
         newRow.append("<td>" + PC + "</td>");
       }
       else{
-        newRow.append("<td>" + _CurrentProcess[cells[j]] + "</td>");
+        newRow.append("<td>" + _ReadyQueue.q[i][cells[j]] + "</td>");
       }
     }
   }
