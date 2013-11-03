@@ -145,6 +145,12 @@ function shellInit() {
   this.commandList[this.commandList.length] = sc;
   
   // processes - list the running processes and their IDs
+  sc = new ShellCommand();
+  sc.command = "processes";
+  sc.description = "- Display the PIDs of all active processes.";
+  sc.function = shellDisplayProcesses;
+  this.commandList[this.commandList.length] = sc;
+  
   // kill <id> - kills the specified process id.
   
   //
@@ -552,10 +558,29 @@ function shellSetQuantum(args)
     else{
       _StdIn.putText("Quantum must be greater than 0.");
       return;
+    }
   }
   else
   {
     _StdIn.putText("Usage: quantum <int>");
     return;
+  }
+}
+
+function shellDisplayProcesses(args)
+{
+  if (_Processes.length > 0){
+    var displayString = "Active process IDs: ";
+    var delimiter = "";
+    for (var i = 0; i < _Processes.length; i++){
+      if (_Processes[i].state != "terminated"){
+        displayString += delimiter + _Processes[i].pid;
+        delimiter = ", ";
+      }
+    }
+    _StdIn.putText(displayString);
+  }
+  else{
+    _StdIn.putText("No active processes.");
   }
 }
