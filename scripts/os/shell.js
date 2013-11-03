@@ -532,7 +532,7 @@ function shellRun(args)
     // _CurrentProcess.state = "running";
     // _CPU.init();
     // _CPU.isExecuting = true;
-    if (!_Scheduler.changeCPU()){ // returns true and starts cpu execution if valid process found
+    if (!_Scheduler.changeProcess()){ // returns true and starts cpu execution if valid process found
       _StdIn.putText("PID " + args[0] + " refers to a terminated process.");
       return;
     }
@@ -561,7 +561,7 @@ function shellRunAll(args)
     // else{ // no valid processes in the ready queue, halt cpu
       // _StdIn.putText("No non-terminated programs loaded.");
     // }
-    if (!_Scheduler.changeCPU()){ // returns true and starts cpu execution if valid process found
+    if (!_Scheduler.changeProcess()){ // returns true and starts cpu execution if valid process found
       _StdIn.putText("No non-terminated programs loaded.");
       return;
     }

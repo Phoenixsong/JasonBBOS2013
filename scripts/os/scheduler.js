@@ -7,7 +7,7 @@ function Scheduler(){
     if (pid < _Processes.length){
       _Processes[pid].state = "terminated";
       if (_CurrentProcess.pid == pid){
-        this.changeCPU();
+        this.changeProcess();
       }
     }
     else{
@@ -17,7 +17,7 @@ function Scheduler(){
   
   // replaces the current process with the next one in the ready queue
   // or stops CPU execution if the ready queue is empty
-  this.changeCPU = function(){
+  this.changeProcess = function(){
     if (_ReadyQueue.getSize() != 0){
       do{
         _CurrentProcess = _ReadyQueue.dequeue();

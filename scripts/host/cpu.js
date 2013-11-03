@@ -178,7 +178,7 @@ function Cpu() {
     }
     hostLog(logString, "OS");
     // switch to the next program in the ready queue, or stop executing
-    _Scheduler.changeCPU();
+    _Scheduler.changeProcess();
   };
   
   this._EC = function(){
