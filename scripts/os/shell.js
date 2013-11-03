@@ -465,23 +465,33 @@ function shellLoad()
     }
   }
   
-  // create PCB first, so the MMU can check if there's available memory for the code
-  var pcb = new Pcb();
-  if (_MemoryManager.allocate(pcb)){
-    // assign pid based on how many processes have been loaded
-    pcb.pid = _Processes.length;
-    // add pcb to the list of processes
-    _Processes.push(pcb);
-    // put the code into memory
-    userInput = userInput.split(/\s/);
-    for (i = 0; i < userInput.length; i++){
-      _MemoryManager.write(i, userInput[i], pcb);
+  // check code length
+  var re = /[0-9a-f]{2}/gi;
+  var userInputSize = userInput.match(re).length;
+  
+  if (_MemoryManager.canFitIntoPartition(userInputSize)){
+    // create PCB first, so the MMU can check if there's available memory for the code
+    var pcb = new Pcb();
+    if (_MemoryManager.allocate(pcb)){
+      // assign pid based on how many processes have been loaded
+      pcb.pid = _Processes.length;
+      // add pcb to the list of processes
+      _Processes.push(pcb);
+      // put the code into memory
+      userInput = userInput.split(/\s/);
+      for (i = 0; i < userInput.length; i++){
+        _MemoryManager.write(i, userInput[i], pcb);
+      }
+      // return PID to console
+      _StdIn.putText("Program loaded with PID " + pcb.pid);
     }
-    // return PID to console
-    _StdIn.putText("Program loaded with PID " + pcb.pid);
+    else{
+      _StdIn.putText("No memory available to load program.");
+      return;
+    }
   }
   else{
-    _StdIn.putText("No memory available to load program.");
+    _StdIn.putText("Program is too long to be loaded into memory.");
     return;
   }
 }

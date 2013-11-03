@@ -16,6 +16,10 @@ function MemoryManager(){
     memoryTableInit(); // defined in control.js
   };
   
+  this.canFitIntoPartition = function(size){
+    return size < _MemoryBlockSize;
+  };
+  
   // sets pcb's memory values and places it in slots
   this.allocate = function(pcb){
     for (var i = 0; i < this.slots.length; i++){
