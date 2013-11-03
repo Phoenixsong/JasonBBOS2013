@@ -51,6 +51,7 @@ function Cpu() {
       this["_" + opCode]();
     }
     catch(e){
+      hostLog("Invalid op code " + opCode + " at byte " + this.PC, "OS");
       this._00();
     }
   };
