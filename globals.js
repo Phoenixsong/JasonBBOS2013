@@ -47,6 +47,8 @@ var _CurrentProcess = null;
 var _Processes = null;
 var _ReadyQueue = null;
 
+var _Quantum = 6;
+
 // Default the OS trace to be on.
 var _Trace = true;
 

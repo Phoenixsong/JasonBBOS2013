@@ -133,8 +133,15 @@ function shellInit() {
   // runall
   sc = new ShellCommand();
   sc.command = "runall";
-  sc.description = "- Starts running all programs loaded into memory simultaneously.";
+  sc.description = "- Starts executing all programs loaded into memory at once.";
   sc.function = shellRunAll;
+  this.commandList[this.commandList.length] = sc;
+  
+  // quantum
+  sc = new ShellCommand();
+  sc.command = "quantum";
+  sc.description = "- Sets the round robin quantum (measured in clock ticks).  Default: 6.";
+  sc.function = shellSetQuantum;
   this.commandList[this.commandList.length] = sc;
   
   // processes - list the running processes and their IDs
@@ -532,6 +539,23 @@ function shellRunAll(args)
   }
   else{
     _StdIn.putText("No programs loaded.");
+    return;
+  }
+}
+
+function shellSetQuantum(args)
+{
+  if (args.length > 0 && !isNaN(parseInt(args[0]))){
+    if (parseInt(args[0]) > 0){
+      _Quantum = parseInt(args[0]);
+    }
+    else{
+      _StdIn.putText("Quantum must be greater than 0.");
+      return;
+  }
+  else
+  {
+    _StdIn.putText("Usage: quantum <int>");
     return;
   }
 }
