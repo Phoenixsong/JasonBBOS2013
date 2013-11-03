@@ -177,15 +177,7 @@ function Cpu() {
     }
     hostLog(logString, "OS");
     // switch to the next program in the ready queue, or stop executing
-    if (_ReadyQueue.getSize() != 0){
-      _CurrentProcess = _ReadyQueue.dequeue();
-      _CurrentProcess.state = "running";
-      _CPU.init();
-      this.isExecuting = true;
-    }
-    else{
-      this.isExecuting = false;
-    }
+    _Scheduler.changeCPU();
   };
   
   this._EC = function(){

@@ -125,14 +125,17 @@ function krnInterruptHandler(irq, params)    // This is the Interrupt Handler Ro
   switch (irq)
   {
     case TIMER_IRQ: 
-    krnTimerISR();                   // Kernel built-in routine for timers (not the clock).
+      krnTimerISR();                   // Kernel built-in routine for timers (not the clock).
     break;
     case KEYBOARD_IRQ: 
-    krnKeyboardDriver.isr(params);   // Kernel mode device driver
-    _StdIn.handleInput();
+      krnKeyboardDriver.isr(params);   // Kernel mode device driver
+      _StdIn.handleInput();
     break;
+    case SOFTWARE_KILL_IRQ:
+      _Scheduler.killProcess(params);
+      break;
     default: 
-    krnTrapError("Invalid Interrupt Request. irq=" + irq + " params=[" + params + "]");
+      krnTrapError("Invalid Interrupt Request. irq=" + irq + " params=[" + params + "]");
   }
 }
 

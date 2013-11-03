@@ -140,7 +140,7 @@ function shellInit() {
   // quantum
   sc = new ShellCommand();
   sc.command = "quantum";
-  sc.description = "- Sets the round robin quantum (measured in clock ticks).  Default: 6.";
+  sc.description = "<int> - Sets the round robin quantum (measured in clock ticks).  Default: 6.";
   sc.function = shellSetQuantum;
   this.commandList[this.commandList.length] = sc;
   
@@ -152,8 +152,12 @@ function shellInit() {
   this.commandList[this.commandList.length] = sc;
   
   // kill <id> - kills the specified process id.
+  sc = new ShellCommand();
+  sc.command = "kill";
+  sc.description = "<PID> - Kill an active process given its PID.";
+  sc.function = shellKillProcess;
+  this.commandList[this.commandList.length] = sc;
   
-  //
   // Display the initial prompt.
   this.putPrompt();
 }
@@ -517,13 +521,21 @@ function shellRun(args)
       _ReadyQueue.enqueue(_Processes[args[0]]);
     }
     else{
-      _StdIn.putText("Invalid PID.");
+      _StdIn.putText("No process exists with PID " + args[0] + ".");
       return;
     }
-    _CurrentProcess = _ReadyQueue.dequeue();
-    _CurrentProcess.state = "running";
-    _CPU.init();
-    _CPU.isExecuting = true;
+    // _CurrentProcess = _ReadyQueue.dequeue();
+    // if (_CurrentProcess.state == "terminated"){
+      // _StdIn.putText("PID " + args[0] + " refers to a terminated process.");
+      // return;
+    // }
+    // _CurrentProcess.state = "running";
+    // _CPU.init();
+    // _CPU.isExecuting = true;
+    if (!_Scheduler.changeCPU()){ // returns true and starts cpu execution if valid process found
+      _StdIn.putText("PID " + args[0] + " refers to a terminated process.");
+      return;
+    }
   }
   else
   {
@@ -538,10 +550,21 @@ function shellRunAll(args)
     _ReadyQueue.enqueue(_Processes[i]);
   }
   if (_ReadyQueue.getSize() != 0){
-    _CurrentProcess = _ReadyQueue.dequeue();
-    _CurrentProcess.state = "running";
-    _CPU.init();
-    _CPU.isExecuting = true;
+    // do{
+      // _CurrentProcess = _ReadyQueue.dequeue();
+    // } while (_CurrentProcess != null && _CurrentProcess.state == "terminated");
+    // if (_CurrentProcess != null){ // found a valid process in the ready queue, reset cpu and run
+      // _CurrentProcess.state = "running";
+      // _CPU.init();
+      // _CPU.isExecuting = true;
+    // }
+    // else{ // no valid processes in the ready queue, halt cpu
+      // _StdIn.putText("No non-terminated programs loaded.");
+    // }
+    if (!_Scheduler.changeCPU()){ // returns true and starts cpu execution if valid process found
+      _StdIn.putText("No non-terminated programs loaded.");
+      return;
+    }
   }
   else{
     _StdIn.putText("No programs loaded.");
@@ -582,5 +605,23 @@ function shellDisplayProcesses(args)
   }
   else{
     _StdIn.putText("No active processes.");
+  }
+}
+
+function shellKillProcess(args)
+{
+  if (args.length > 0){
+    if (parseInt(args[0]) >= 0){
+      _KernelInterruptQueue.enqueue( new Interrupt(SOFTWARE_KILL_IRQ, args[0]) );
+    }
+    else{
+      _StdIn.putText("PID must be not be negative.");
+      return;
+    }
+  }
+  else
+  {
+    _StdIn.putText("Usage: kill <PID>");
+    return;
   }
 }
