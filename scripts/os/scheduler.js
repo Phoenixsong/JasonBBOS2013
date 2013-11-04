@@ -46,14 +46,14 @@ function Scheduler(){
   this.cycleCpu = function(){
     if (_CycleCounter < _Quantum){
       _CycleCounter++;
+      console.log(_CycleCounter);
       _CPU.cycle();
     }
     else{
-      _CycleCounter = 1;
+      _CycleCounter = 0;
       if (_ReadyQueue.getSize() != 0){
-        this.contextSwitch();
+        _KernelInterruptQueue.enqueue( new Interrupt(SOFTWARE_SWITCH_IRQ, 0) );
       }
-      _CPU.cycle();
     }
   };
   

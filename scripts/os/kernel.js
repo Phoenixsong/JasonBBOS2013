@@ -135,6 +135,9 @@ function krnInterruptHandler(irq, params)    // This is the Interrupt Handler Ro
     case SOFTWARE_KILL_IRQ:
       _Scheduler.killProcess(params);
       break;
+    case SOFTWARE_SWITCH_IRQ:
+      _Scheduler.contextSwitch();
+      break;
     default: 
       krnTrapError("Invalid Interrupt Request. irq=" + irq + " params=[" + params + "]");
   }
