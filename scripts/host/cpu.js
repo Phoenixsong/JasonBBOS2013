@@ -178,6 +178,7 @@ function Cpu() {
     }
     hostLog(logString, "OS");
     // switch to the next program in the ready queue, or stop executing
+    _CycleCounter = 1;
     _Scheduler.changeProcess();
   };
   

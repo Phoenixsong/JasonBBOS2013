@@ -22,9 +22,13 @@ function Scheduler(){
       do{
         _CurrentProcess = _ReadyQueue.dequeue();
       } while (_CurrentProcess != null && _CurrentProcess.state == "terminated");
-      if (_CurrentProcess != null){ // found a valid process in the ready queue, reset cpu and run
+      if (_CurrentProcess != null){ // found a valid process in the ready queue, load cpu with pcb values and run
         _CurrentProcess.state = "running";
-        _CPU.init();
+        var cpuVars = ["PC", "Acc", "Xreg", "Yreg", "Zflag"];
+        var pcbVars = ["pc", "acc", "x", "y", "z"];
+        for (var i = 0; i < cpuVars.length; i++){
+          _CPU[cpuVars[i]] = _CurrentProcess[pcbVars[i]];
+        }
         _CPU.isExecuting = true;
         return true;
       }
@@ -37,5 +41,31 @@ function Scheduler(){
       _CPU.isExecuting = false;
       return false;
     }
+  };
+  
+  this.cycleCpu = function(){
+    if (_CycleCounter < _Quantum){
+      _CycleCounter++;
+      _CPU.cycle();
+    }
+    else{
+      _CycleCounter = 1;
+      if (_ReadyQueue.getSize() != 0){
+        this.contextSwitch();
+      }
+      _CPU.cycle();
+    }
+  };
+  
+  this.contextSwitch = function(){
+    hostLog("Context switching", "OS");
+    _CurrentProcess["state"] = "waiting";
+    var cpuVars = ["PC", "Acc", "Xreg", "Yreg", "Zflag"];
+    var pcbVars = ["pc", "acc", "x", "y", "z"];
+    for (var i = 0; i < cpuVars.length; i++){
+      _CurrentProcess[pcbVars[i]] = _CPU[cpuVars[i]];
+    }
+    _ReadyQueue.enqueue(_CurrentProcess);
+    this.changeProcess();
   };
 }
