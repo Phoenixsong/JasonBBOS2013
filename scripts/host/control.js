@@ -123,6 +123,23 @@ function memoryTableUpdate(index, value){
   $("#tableMemory tr").eq(tr).children("td").eq(td).html(value);
 }
 
+function diskTableInit(){
+  // initialize the memory display
+  var tableString = "";
+  for (var t = 0; t < _MaxTracks; t++){
+    for (var s = 0; s < _MaxSectors; s++){
+      for (var b = 0; b < _MaxBlocks; b++){
+        tableString += "<tr><td>" + t + s + b + "</td><td>" + localStorage["" + t + s + b] + "</td></tr>";
+      }
+    }
+  }
+  $("#tableDisk").html(tableString);
+}
+
+function diskTableUpdate(index, value){
+  $("#tableDisk tr").eq(index).children("td").html(value);
+}
+
 function cpuTableUpdate(){
   var cells = ["PC", "Acc", "Xreg", "Yreg", "Zflag"];
   for (var i = 0; i < cells.length; i++){
@@ -216,4 +233,21 @@ function hostBtnReset_click(btn)
   // That boolean parameter is the 'forceget' flag. When it is true it causes the page to always
   // be reloaded from the server. If it is false or not specified, the browser may reload the 
   // page from its cache, which is not what we want.
+}
+
+function hostBtnSwap_click(btn)
+{
+  if ($("#spanMemory").css("font-weight") == "bold"){
+    var shown = "Disk";
+    var hidden = "Memory";
+  }
+  else{
+    var shown = "Memory";
+    var hidden = "Disk";
+  }
+  $("#span" + shown).css("font-weight", "bold");
+  $("#span" + hidden).css("font-weight", "normal");
+  $("#table" + shown).show();
+  $("#table" + hidden).hide();
+  diskTableUpdate();
 }

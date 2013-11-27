@@ -22,9 +22,9 @@ function DeviceDriverFileSystem()                     // Add or override specifi
 function krnFSDriverEntry()
 {
   // Initialization routine for this, the kernel-mode Keyboard Device Driver.
-  this.status = "loaded";
   fsFormat();
-  // More?
+  diskTableInit();
+  this.status = "loaded";
 }
 
 function fsFormat(){
@@ -52,7 +52,7 @@ function fsFormat(){
 
 function generateBlock(str){
   while (str.length < 64){
-    str += "0";
+    str += "-";
   }
   return str;
 }
