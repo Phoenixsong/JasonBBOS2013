@@ -36,9 +36,11 @@ function krnBootstrap()      // Page 8.
   krnKeyboardDriver.driverEntry();                    // Call the driverEntry() initialization routine.
   krnTrace(krnKeyboardDriver.status);
   
-  //
-  // ... more?
-  //
+  // Load the File System Device Driver
+  krnTrace("Loading the file system device driver.");
+  krnFileSystemDriver = new DeviceDriverFileSystem();     // Construct it.  TODO: Should that have a _global-style name?
+  krnFileSystemDriver.driverEntry();                    // Call the driverEntry() initialization routine.
+  krnTrace(krnFileSystemDriver.status);
   
   // Enable the OS Interrupts.  (Not the CPU clock interrupt, as that is done in the hardware sim.)
   krnTrace("Enabling the interrupts.");
