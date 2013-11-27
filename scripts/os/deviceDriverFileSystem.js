@@ -53,8 +53,10 @@ function fsFormat(){
 
 function fsCreate(filename){
   var slot = getFirstUnusedSlot();
-  if (slot !== false){
+  var block = getFirstUnusedBlock();
+  if (slot !== false && block !== false){
     fillBlock(slot, filename);
+    fillBlock(block, "");
     return true;
   }
   else{
@@ -77,6 +79,19 @@ function getFirstUnusedSlot(){
     }
   }
   return false;
+}
+
+function getFirstUnusedBlock(){
+  for (var t = 1; t < _MaxTracks; t++){
+    for (var s = 0; s < _MaxSectors; s++){
+      for (var b = 0; b < _MaxBlocks; b++){
+        var key = "" + t + s + b;
+        if (getBlockStatus(key) == "empty"){
+          return key;
+        }
+      }
+    }
+  }
 }
       
 function getBlockStatus(block){
