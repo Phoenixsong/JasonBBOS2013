@@ -54,6 +54,10 @@ function fsFormat(){
 function fsCreate(filename){
   var slot = getFirstUnusedSlot();
   var block = getFirstUnusedBlock();
+  if (getFile(filename) !== false){
+    _StdIn.putText("A file already exists with that name.  ");
+    return false;
+  }
   if (slot !== false && block !== false){
     fillBlock(slot, filename);
     fillBlock(block, "");
@@ -92,6 +96,29 @@ function getFirstUnusedBlock(){
       }
     }
   }
+}
+
+function getFile(filename){
+  var re = new RegExp(filename + "-*?");
+  var fileKey = "";
+  var file = "";
+  for (var s = 0; s < _MaxSectors; s++){
+    for (var b = 0; b < _MaxBlocks; b++){
+      var key = "0" + s + b;
+      if (key != "000" && re.test(localStorage[key])){
+        var fileKey = key;
+      }
+    }
+  }
+  if (fileKey == ""){
+    return false;
+  }
+  file += localStorage[fileKey].substr(4);
+  while (localStorage[fileKey].substr(1, 3) != "---"){
+    fileKey = localStorage[fileKey].substr(1, 3);
+    file += localStorage[fileKey].substr(4);
+  }
+  return file;
 }
       
 function getBlockStatus(block){

@@ -645,10 +645,10 @@ function shellCreate(args)
   if (args.length > 0){
     if (args[0].indexOf("-") == -1){
       if (krnFileSystemDriver.create(args[0])){
-        _StdIn.putText("FIle creation successful.");
+        _StdIn.putText("File creation successful.");
       }
       else{
-        _StdIn.putText("FIle creation failed.");
+        _StdIn.putText("File creation failed.");
       }
       return;
     }
