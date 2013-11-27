@@ -17,6 +17,7 @@ function DeviceDriverFileSystem()                     // Add or override specifi
   this.isr = null;
   // "Constructor" code.
   this.format = fsFormat;
+  this.create = fsCreate;
 }
 
 function krnFSDriverEntry()
@@ -47,6 +48,43 @@ function fsFormat(){
   }
   catch(e){
     return false;
+  }
+}
+
+function fsCreate(filename){
+  var slot = getFirstUnusedSlot();
+  if (slot !== false){
+    fillBlock(slot, filename);
+    return true;
+  }
+  else{
+    return false;
+  }
+}
+
+function fillBlock(block, contents){
+  localStorage[block] = generateBlock("1---" + contents);
+  diskTableUpdate(block, localStorage[block]);
+}
+  
+function getFirstUnusedSlot(){
+  for (var s = 0; s < _MaxSectors; s++){
+    for (var b = 0; b < _MaxBlocks; b++){
+      var key = "0" + s + b;
+      if (key != "000" && getBlockStatus(key) == "empty"){
+        return key;
+      }
+    }
+  }
+  return false;
+}
+      
+function getBlockStatus(block){
+  switch(localStorage[block].substr(0, 1)){
+    case "0":
+      return "empty";
+    case "1":
+      return "filled";
   }
 }
 

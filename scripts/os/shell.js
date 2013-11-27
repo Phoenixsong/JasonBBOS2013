@@ -158,6 +158,13 @@ function shellInit() {
   sc.function = shellKillProcess;
   this.commandList[this.commandList.length] = sc;
   
+  // create
+  sc = new ShellCommand();
+  sc.command = "create";
+  sc.description = "<filename> - Create a file with the given filename.";
+  sc.function = shellCreate;
+  this.commandList[this.commandList.length] = sc;
+  
   // format
   sc = new ShellCommand();
   sc.command = "format";
@@ -629,6 +636,30 @@ function shellKillProcess(args)
   else
   {
     _StdIn.putText("Usage: kill <PID>");
+    return;
+  }
+}
+
+function shellCreate(args)
+{
+  if (args.length > 0){
+    if (args[0].indexOf("-") == -1){
+      if (krnFileSystemDriver.create(args[0])){
+        _StdIn.putText("FIle creation successful.");
+      }
+      else{
+        _StdIn.putText("FIle creation failed.");
+      }
+      return;
+    }
+    else{
+      _StdIn.putText("Filename must not have a dash.");
+      return;
+    }
+  }
+  else
+  {
+    _StdIn.putText("Usage: create <filename>");
     return;
   }
 }

@@ -137,7 +137,12 @@ function diskTableInit(){
 }
 
 function diskTableUpdate(index, value){
-  $("#tableDisk tr").eq(index).children("td").html(value);
+  var t = parseInt(index.substr(0, 1));
+  var s = parseInt(index.substr(1, 1));
+  var b = parseInt(index.substr(2, 1));
+  var row = (t * Math.pow(_MaxSectors, 2)) + (s * _MaxSectors) + b;
+  console.log("index: " + index + " ~ row: " + row);
+  $("#tableDisk tr").eq(row).children("td").eq(1).html(value);
 }
 
 function cpuTableUpdate(){
@@ -249,5 +254,4 @@ function hostBtnSwap_click(btn)
   $("#span" + hidden).css("font-weight", "normal");
   $("#table" + shown).show();
   $("#table" + hidden).hide();
-  diskTableUpdate();
 }
