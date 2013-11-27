@@ -158,6 +158,13 @@ function shellInit() {
   sc.function = shellKillProcess;
   this.commandList[this.commandList.length] = sc;
   
+  // format
+  sc = new ShellCommand();
+  sc.command = "format";
+  sc.description = "- Initialize all blocks in all sectors in all tracks.";
+  sc.function = shellFormat;
+  this.commandList[this.commandList.length] = sc;
+  
   // Display the initial prompt.
   this.putPrompt();
 }
@@ -623,5 +630,15 @@ function shellKillProcess(args)
   {
     _StdIn.putText("Usage: kill <PID>");
     return;
+  }
+}
+
+function shellFormat()
+{
+  if (krnFileSystemDriver.format()){
+    _StdIn.putText("Format successful.");
+  }
+  else{
+    _StdIn.putText("Format failed.");
   }
 }

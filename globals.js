@@ -44,6 +44,10 @@ var _MemoryTotalSize = 768;
 var _MemoryBlockSize = 256;
 var _MemoryManager = null;
 
+var _MaxTracks = 4;
+var _MaxSectors = 8;
+var _MaxBlocks = 8;
+
 var _CurrentProcess = null;
 var _Processes = null;
 var _ReadyQueue = null;
