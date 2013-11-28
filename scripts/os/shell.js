@@ -179,6 +179,13 @@ function shellInit() {
   sc.function = shellWrite;
   this.commandList[this.commandList.length] = sc;
   
+  // delete
+  sc = new ShellCommand();
+  sc.command = "delete";
+  sc.description = "<filename> - Remove the file with the given filename from storage.";
+  sc.function = shellDelete;
+  this.commandList[this.commandList.length] = sc;
+  
   // format
   sc = new ShellCommand();
   sc.command = "format";
@@ -716,6 +723,24 @@ function shellWrite(args)
   else
   {
     _StdIn.putText("Usage: write <filename> \"data\"");
+    return;
+  }
+}
+
+function shellDelete(args)
+{
+  if (args.length > 0){
+    if (krnFileSystemDriver.del(args[0])){
+      _StdIn.putText("Deletion successful.");
+    }
+    else{
+      _StdIn.putText("Deletion unsuccessful.");
+    }
+    return;
+  }
+  else
+  {
+    _StdIn.putText("Usage: delete <filename>");
     return;
   }
 }

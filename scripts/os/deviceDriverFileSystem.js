@@ -20,6 +20,7 @@ function DeviceDriverFileSystem()                     // Add or override specifi
   this.create = fsCreate;
   this.read = fsRead;
   this.write = fsWrite;
+  this.del = fsDelete;
 }
 
 function krnFSDriverEntry()
@@ -87,11 +88,7 @@ function fsRead(filename){
 
 function fsWrite(filename, data){
   if (getSlotWithFilename(filename) !== false){
-    var block = getSlotWithFilename(filename);
-    var blocks = getLinkedBlocks(getAddressFromBlock(block));
-    for (var i = 0; i < blocks.length; i++){
-      clearBlock(blocks[i]);
-    }
+    clearFile(filename);
     var lastBlock = "";
     for (var i = 0; i < Math.ceil(data.length / 60); i++){
       var newBlock = getFirstUnusedBlock();
@@ -101,6 +98,17 @@ function fsWrite(filename, data){
       fillBlock(newBlock, "---", data.substr(i * 60, 60));
       lastBlock = newBlock;
     }
+    return true;
+  }
+  else{
+    return false;
+  }
+}
+
+function fsDelete(filename){
+  if (getSlotWithFilename(filename) !== false){
+    clearFile(filename);
+    clearBlock(getSlotWithFilename(filename));
     return true;
   }
   else{
@@ -190,6 +198,15 @@ function setAddressOfBlock(block, address){
 
 function clearBlock(block){
   localStorage[block] = generateBlock("0---");
+  diskTableUpdate(block, localStorage[block]);
+}
+
+function clearFile(filename){
+  var block = getSlotWithFilename(filename);
+  var blocks = getLinkedBlocks(getAddressFromBlock(block));
+  for (var i = 0; i < blocks.length; i++){
+    clearBlock(blocks[i]);
+  }
 }
 
 function generateBlock(str){
