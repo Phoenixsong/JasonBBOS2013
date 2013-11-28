@@ -165,6 +165,13 @@ function shellInit() {
   sc.function = shellCreate;
   this.commandList[this.commandList.length] = sc;
   
+  // read
+  sc = new ShellCommand();
+  sc.command = "read";
+  sc.description = "<filename> - Read and display the contents of the file with the given filename.";
+  sc.function = shellRead;
+  this.commandList[this.commandList.length] = sc;
+  
   // format
   sc = new ShellCommand();
   sc.command = "format";
@@ -660,6 +667,25 @@ function shellCreate(args)
   else
   {
     _StdIn.putText("Usage: create <filename>");
+    return;
+  }
+}
+
+function shellRead(args)
+{
+  if (args.length > 0){
+    var file = krnFileSystemDriver.read(args[0]);
+    if (file !== false){
+      _StdIn.putText(file);
+    }
+    else{
+      _StdIn.putText("File not found.");
+    }
+    return;
+  }
+  else
+  {
+    _StdIn.putText("Usage: read <filename>");
     return;
   }
 }

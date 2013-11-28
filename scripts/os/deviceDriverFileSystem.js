@@ -18,6 +18,7 @@ function DeviceDriverFileSystem()                     // Add or override specifi
   // "Constructor" code.
   this.format = fsFormat;
   this.create = fsCreate;
+  this.read = fsRead;
 }
 
 function krnFSDriverEntry()
@@ -54,13 +55,13 @@ function fsFormat(){
 function fsCreate(filename){
   var slot = getFirstUnusedSlot();
   var block = getFirstUnusedBlock();
-  if (getFile(filename) !== false){
+  if (getSlotWithFilename(filename) !== false){
     _StdIn.putText("A file already exists with that name.  ");
     return false;
   }
   if (slot !== false && block !== false){
-    fillBlock(slot, filename);
-    fillBlock(block, "");
+    fillBlock(slot, block, filename);
+    fillBlock(block, "---", "");
     return true;
   }
   else{
@@ -68,8 +69,18 @@ function fsCreate(filename){
   }
 }
 
-function fillBlock(block, contents){
-  localStorage[block] = generateBlock("1---" + contents);
+function fsRead(filename){
+  var block = getSlotWithFilename(filename);
+  var blocks = getLinkedBlocks(getAddressFromBlock(block));
+  var file = "";
+  for (var i = 0; i < blocks.length; i++){
+    file += getDataFromBlock(blocks[i]);
+  }
+  return file;
+}
+
+function fillBlock(block, nextAddress, contents){
+  localStorage[block] = generateBlock("1" + nextAddress + contents);
   diskTableUpdate(block, localStorage[block]);
 }
   
@@ -98,27 +109,26 @@ function getFirstUnusedBlock(){
   }
 }
 
-function getFile(filename){
+function getSlotWithFilename(filename){
   var re = new RegExp(filename + "-*?");
-  var fileKey = "";
-  var file = "";
   for (var s = 0; s < _MaxSectors; s++){
     for (var b = 0; b < _MaxBlocks; b++){
       var key = "0" + s + b;
       if (key != "000" && re.test(localStorage[key])){
-        var fileKey = key;
+        return key;
       }
     }
   }
-  if (fileKey == ""){
-    return false;
+  return false;
+}
+
+function getLinkedBlocks(block){
+  var blocks = [block];
+  while (localStorage[block].substr(1, 3) != "---"){
+    block = localStorage[block].substr(1, 3);
+    blocks.push(block);
   }
-  file += localStorage[fileKey].substr(4);
-  while (localStorage[fileKey].substr(1, 3) != "---"){
-    fileKey = localStorage[fileKey].substr(1, 3);
-    file += localStorage[fileKey].substr(4);
-  }
-  return file;
+  return blocks;
 }
       
 function getBlockStatus(block){
@@ -128,6 +138,14 @@ function getBlockStatus(block){
     case "1":
       return "filled";
   }
+}
+
+function getDataFromBlock(block){
+  return localStorage[block].substr(4, (localStorage[block].substr(4).indexOf("-")));
+}
+
+function getAddressFromBlock(block){
+  return localStorage[block].substr(1, 3);
 }
 
 function generateBlock(str){

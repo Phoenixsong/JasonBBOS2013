@@ -141,7 +141,7 @@ function diskTableUpdate(index, value){
   var s = parseInt(index.substr(1, 1));
   var b = parseInt(index.substr(2, 1));
   var row = (t * Math.pow(_MaxSectors, 2)) + (s * _MaxSectors) + b;
-  console.log("index: " + index + " ~ row: " + row);
+  //console.log("index: " + index + " ~ row: " + row);
   $("#tableDisk tr").eq(row).children("td").eq(1).html(value);
 }
 
