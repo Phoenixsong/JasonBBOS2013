@@ -19,6 +19,7 @@ function DeviceDriverFileSystem()                     // Add or override specifi
   this.format = fsFormat;
   this.create = fsCreate;
   this.read = fsRead;
+  this.write = fsWrite;
 }
 
 function krnFSDriverEntry()
@@ -70,13 +71,41 @@ function fsCreate(filename){
 }
 
 function fsRead(filename){
-  var block = getSlotWithFilename(filename);
-  var blocks = getLinkedBlocks(getAddressFromBlock(block));
-  var file = "";
-  for (var i = 0; i < blocks.length; i++){
-    file += getDataFromBlock(blocks[i]);
+  if (getSlotWithFilename(filename) !== false){
+    var block = getSlotWithFilename(filename);
+    var blocks = getLinkedBlocks(getAddressFromBlock(block));
+    var file = "";
+    for (var i = 0; i < blocks.length; i++){
+      file += getDataFromBlock(blocks[i]);
+    }
+    return file;
   }
-  return file;
+  else{
+    return false;
+  }
+}
+
+function fsWrite(filename, data){
+  if (getSlotWithFilename(filename) !== false){
+    var block = getSlotWithFilename(filename);
+    var blocks = getLinkedBlocks(getAddressFromBlock(block));
+    for (var i = 0; i < blocks.length; i++){
+      clearBlock(blocks[i]);
+    }
+    var lastBlock = "";
+    for (var i = 0; i < Math.ceil(data.length / 60); i++){
+      var newBlock = getFirstUnusedBlock();
+      if (lastBlock != ""){
+        setAddressOfBlock(lastBlock, newBlock);
+      }
+      fillBlock(newBlock, "---", data.substr(i * 60, 60));
+      lastBlock = newBlock;
+    }
+    return true;
+  }
+  else{
+    return false;
+  }
 }
 
 function fillBlock(block, nextAddress, contents){
@@ -141,11 +170,26 @@ function getBlockStatus(block){
 }
 
 function getDataFromBlock(block){
-  return localStorage[block].substr(4, (localStorage[block].substr(4).indexOf("-")));
+  var i = localStorage[block].substr(4).indexOf("-");
+  if (i !== -1){
+    return localStorage[block].substr(4, (localStorage[block].substr(4).indexOf("-")));
+  }
+  else{
+    return localStorage[block].substr(4);
+  }
 }
 
 function getAddressFromBlock(block){
   return localStorage[block].substr(1, 3);
+}
+
+function setAddressOfBlock(block, address){
+  localStorage[block] = "1" + address + localStorage[block].substr(4);
+  diskTableUpdate(block, localStorage[block]);
+}
+
+function clearBlock(block){
+  localStorage[block] = generateBlock("0---");
 }
 
 function generateBlock(str){

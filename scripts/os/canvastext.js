@@ -166,17 +166,20 @@ CanvasTextFunctions.draw = function(ctx,font,size,x,y,str)
 		ctx.beginPath();
 		var penUp = 1;
 		var needStroke = 0;
-		if ((i+1) % 50 == 0){
-			needsBr = true;
+    if (x >= 450){
+      needsBr = true;
     }
-		if (needsBr && str.charAt(i) == " "){
+    if (needsBr && (str.charAt(i) == " " || x >= 490)){
 			needsBr = false;
 			x = 0;
       if (_StdIn.CurrentYPosition <= 557){
         y += _DefaultFontSize + _FontHeightMargin;
       }
 			_StdIn.advanceLine();
-			continue; // don't render the space
+      if (str.charAt(i) == " "){
+        console.log("asdf");
+        continue;
+      }
     }
 		for (var j = 0; j < c.points.length; j++) 
 		{

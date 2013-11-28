@@ -172,6 +172,13 @@ function shellInit() {
   sc.function = shellRead;
   this.commandList[this.commandList.length] = sc;
   
+  // write
+  sc = new ShellCommand();
+  sc.command = "write";
+  sc.description = "<filename> \"data\" - Write the data inside the quotes to the file with the given filename.";
+  sc.function = shellWrite;
+  this.commandList[this.commandList.length] = sc;
+  
   // format
   sc = new ShellCommand();
   sc.command = "format";
@@ -686,6 +693,29 @@ function shellRead(args)
   else
   {
     _StdIn.putText("Usage: read <filename>");
+    return;
+  }
+}
+
+function shellWrite(args)
+{
+  if (args.length > 1 && _Console.buffer.indexOf('"') != -1 && _Console.buffer.match(/"/g).length >= 2){
+    if (_Console.buffer.indexOf("-") != -1){
+      _StdIn.putText("Data cannot contain a dash.  Write unsuccessful.");
+      return;
+    }
+    var data = _Console.buffer.match(/"(.*)"/)[1];
+    if (krnFileSystemDriver.write(args[0], data)){
+      _StdIn.putText("Write successful.");
+    }
+    else{
+      _StdIn.putText("Write unsuccessful.");
+    }
+    return;
+  }
+  else
+  {
+    _StdIn.putText("Usage: write <filename> \"data\"");
     return;
   }
 }
