@@ -522,15 +522,15 @@ function shellLoad()
   var userInputSize = userInput.match(re).length;
   
   if (_MemoryManager.canFitIntoPartition(userInputSize)){
+    userInput = userInput.split(/\s/);
     // create PCB first, so the MMU can check if there's available memory for the code
     var pcb = new Pcb();
+    // assign pid based on how many processes have been loaded
+    pcb.pid = _Processes.length;
+    // add pcb to the list of processes
+    _Processes.push(pcb);
     if (_MemoryManager.allocate(pcb)){
-      // assign pid based on how many processes have been loaded
-      pcb.pid = _Processes.length;
-      // add pcb to the list of processes
-      _Processes.push(pcb);
       // put the code into memory
-      userInput = userInput.split(/\s/);
       for (i = 0; i < userInput.length; i++){
         _MemoryManager.write(i, userInput[i], pcb);
       }
@@ -538,8 +538,24 @@ function shellLoad()
       _StdIn.putText("Program loaded with PID " + pcb.pid);
     }
     else{
-      _StdIn.putText("No memory available to load program.");
-      return;
+      pcb.state = "disk";
+      var filename = "Process-" + pcb.pid;
+      if (krnFileSystemDriver.create(filename)){
+        var data = "";
+        for (i = 0; i < userInput.length; i++){
+          data += userInput[i];
+        }
+        if (krnFileSystemDriver.write(filename, data)){
+          _StdIn.putText("Program loaded with PID " + pcb.pid);
+        }
+        else{
+          _StdIn.putText("Program write unsuccessful.");
+        }
+      }
+      else{
+        _StdIn.putText("No memory available to load program.");
+        return;
+      }
     }
   }
   else{
