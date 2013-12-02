@@ -539,7 +539,8 @@ function shellLoad()
     }
     else{
       pcb.state = "disk";
-      var filename = "Process-" + pcb.pid;
+      pcb.base = -1;
+      var filename = "process-" + pcb.pid;
       if (krnFileSystemDriver.create(filename)){
         var data = "";
         for (i = 0; i < userInput.length; i++){

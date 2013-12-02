@@ -177,7 +177,6 @@ CanvasTextFunctions.draw = function(ctx,font,size,x,y,str)
       }
 			_StdIn.advanceLine();
       if (str.charAt(i) == " "){
-        console.log("asdf");
         continue;
       }
     }

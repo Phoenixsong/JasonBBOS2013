@@ -147,11 +147,10 @@ function getFirstUnusedBlock(){
 }
 
 function getSlotWithFilename(filename){
-  var re = new RegExp(filename + "-*?");
   for (var s = 0; s < _MaxSectors; s++){
     for (var b = 0; b < _MaxBlocks; b++){
       var key = "0" + s + b;
-      if (key != "000" && re.test(localStorage[key])){
+      if (key != "000" && localStorage[key].indexOf(filename) !== -1){
         return key;
       }
     }

@@ -26,7 +26,9 @@ function Scheduler(){
         _CurrentProcess = _ReadyQueue.dequeue();
       } while (_CurrentProcess != null && _CurrentProcess.state == "terminated");
       if (_CurrentProcess != null){ // found a valid process in the ready queue, load cpu with pcb values and run
-        _CurrentProcess.state = "running";
+        if (_CurrentProcess.state != "disk"){
+          _CurrentProcess.state = "running";
+        }
         var cpuVars = ["PC", "Acc", "Xreg", "Yreg", "Zflag"];
         var pcbVars = ["pc", "acc", "x", "y", "z"];
         for (var i = 0; i < cpuVars.length; i++){
@@ -53,13 +55,15 @@ function Scheduler(){
   this.cycleCpu = function(){
     if (_CycleCounter < _Quantum){
       _CycleCounter++;
-      console.log(_CycleCounter);
       _CPU.cycle();
     }
     else{
       _CycleCounter = 0;
       if (_ReadyQueue.getSize() != 0){
         _KernelInterruptQueue.enqueue( new Interrupt(SOFTWARE_SWITCH_IRQ, 0) );
+      }
+      else{
+        _CPU.cycle();
       }
     }
   };

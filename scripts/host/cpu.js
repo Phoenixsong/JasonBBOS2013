@@ -177,6 +177,7 @@ function Cpu() {
       insertDelimiter = true;
     }
     hostLog(logString, "OS");
+    _MemoryManager.clear(_CurrentProcess);
     // switch to the next program in the ready queue, or stop executing
     _CycleCounter = 0;
     _Scheduler.changeProcess();
