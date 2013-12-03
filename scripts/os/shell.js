@@ -207,6 +207,13 @@ function shellInit() {
   sc.function = shellSetSchedule;
   this.commandList[this.commandList.length] = sc;
   
+  // getschedule
+  sc = new ShellCommand();
+  sc.command = "getschedule";
+  sc.description = "- Displays the currently selected CPU scheduling algorithm.";
+  sc.function = shellGetSchedule;
+  this.commandList[this.commandList.length] = sc;
+  
   // Display the initial prompt.
   this.putPrompt();
 }
@@ -802,4 +809,21 @@ function shellSetSchedule(args)
     _StdIn.putText("Usage: setschedule <rr | fcfs | priority>");
     return;
   }
+}
+
+function shellGetSchedule()
+{
+  var alg = "";
+  switch(_SchedulingAlg){
+    case "rr":
+      alg = "Round robin";
+      break;
+    case "fcfs":
+      alg = "First-come, first-served";
+      break;
+    case "priority":
+      alg = "Non-preemptive priority";
+      break;
+  }
+  _StdIn.putText(alg);
 }
