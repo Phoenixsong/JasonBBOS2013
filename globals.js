@@ -52,6 +52,7 @@ var _CurrentProcess = null;
 var _Processes = null;
 var _ReadyQueue = null;
 
+var _SchedulingAlg = "rr";
 var _Quantum = 6;
 var _CycleCounter = 0;
 var _Scheduler = null;

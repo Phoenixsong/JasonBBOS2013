@@ -200,6 +200,13 @@ function shellInit() {
   sc.function = shellLs;
   this.commandList[this.commandList.length] = sc;
   
+  // setschedule
+  sc = new ShellCommand();
+  sc.command = "setschedule";
+  sc.description = "<rr | fcfs | priority> - Selects a CPU scheduling algorithm.";
+  sc.function = shellSetSchedule;
+  this.commandList[this.commandList.length] = sc;
+  
   // Display the initial prompt.
   this.putPrompt();
 }
@@ -782,4 +789,17 @@ function shellFormat()
 function shellLs()
 {
   _StdIn.putText(krnFileSystemDriver.ls());
+}
+
+function shellSetSchedule(args)
+{
+  if (args.length > 0 && (args[0] == "rr" || args[0] == "fcfs" || args[0] == "priority")){
+    _SchedulingAlg = args[0];
+    _StdIn.putText("CPU scheduling algorithm set.");
+  }
+  else
+  {
+    _StdIn.putText("Usage: setschedule <rr | fcfs | priority>");
+    return;
+  }
 }
