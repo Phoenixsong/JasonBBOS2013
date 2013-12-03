@@ -53,18 +53,23 @@ function Scheduler(){
   };
   
   this.cycleCpu = function(){
-    if (_CycleCounter < _Quantum){
-      _CycleCounter++;
-      _CPU.cycle();
-    }
-    else{
-      _CycleCounter = 0;
-      if (_ReadyQueue.getSize() != 0){
-        _KernelInterruptQueue.enqueue( new Interrupt(SOFTWARE_SWITCH_IRQ, 0) );
-      }
-      else{
+    if (_SchedulingAlg == "rr"){
+      if (_CycleCounter < _Quantum){
+        _CycleCounter++;
         _CPU.cycle();
       }
+      else{
+        _CycleCounter = 0;
+        if (_ReadyQueue.getSize() != 0){
+          _KernelInterruptQueue.enqueue( new Interrupt(SOFTWARE_SWITCH_IRQ, 0) );
+        }
+        else{
+          _CPU.cycle();
+        }
+      }
+    }
+    else if (_SchedulingAlg == "fcfs"){
+      _CPU.cycle();
     }
   };
   
