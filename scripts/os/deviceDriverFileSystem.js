@@ -118,28 +118,40 @@ function fsDelete(filename){
 
 function fillBlock(block, nextAddress, contents){
   localStorage[block] = generateBlock("1" + nextAddress + contents);
+  updateFirstUnusedSlot();
+  updateFirstUnusedBlock();
+  diskTableUpdate("000", localStorage["000"]);
   diskTableUpdate(block, localStorage[block]);
 }
   
 function getFirstUnusedSlot(){
+  return localStorage["000"].substr(0, 3);
+}
+
+function getFirstUnusedBlock(){
+  return localStorage["000"].substr(3, 3);
+}
+
+function updateFirstUnusedSlot(){
   for (var s = 0; s < _MaxSectors; s++){
     for (var b = 0; b < _MaxBlocks; b++){
       var key = "0" + s + b;
       if (key != "000" && getBlockStatus(key) == "empty"){
-        return key;
+        localStorage["000"] = generateBlock(key + localStorage["000"].substr(3, 3));
+        return;
       }
     }
   }
-  return false;
 }
 
-function getFirstUnusedBlock(){
+function updateFirstUnusedBlock(){
   for (var t = 1; t < _MaxTracks; t++){
     for (var s = 0; s < _MaxSectors; s++){
       for (var b = 0; b < _MaxBlocks; b++){
         var key = "" + t + s + b;
         if (getBlockStatus(key) == "empty"){
-          return key;
+          localStorage["000"] = generateBlock(localStorage["000"].substr(0, 3) + key);
+          return;
         }
       }
     }
@@ -198,6 +210,9 @@ function setAddressOfBlock(block, address){
 function clearBlock(block){
   localStorage[block] = generateBlock("0---");
   diskTableUpdate(block, localStorage[block]);
+  updateFirstUnusedSlot();
+  updateFirstUnusedBlock();
+  diskTableUpdate("000", localStorage["000"]);
 }
 
 function clearFile(filename){
