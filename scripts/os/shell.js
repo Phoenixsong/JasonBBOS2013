@@ -193,6 +193,13 @@ function shellInit() {
   sc.function = shellFormat;
   this.commandList[this.commandList.length] = sc;
   
+  // ls
+  sc = new ShellCommand();
+  sc.command = "ls";
+  sc.description = "- Lists the files currently stored on the disk.";
+  sc.function = shellLs;
+  this.commandList[this.commandList.length] = sc;
+  
   // Display the initial prompt.
   this.putPrompt();
 }
@@ -770,4 +777,9 @@ function shellFormat()
   else{
     _StdIn.putText("Format failed.");
   }
+}
+
+function shellLs()
+{
+  _StdIn.putText(krnFileSystemDriver.ls());
 }

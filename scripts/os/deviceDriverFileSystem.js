@@ -21,6 +21,7 @@ function DeviceDriverFileSystem()                     // Add or override specifi
   this.read = fsRead;
   this.write = fsWrite;
   this.del = fsDelete;
+  this.ls = fsLs;
 }
 
 function krnFSDriverEntry()
@@ -116,6 +117,21 @@ function fsDelete(filename){
   }
 }
 
+function fsLs(){
+  var files = "";
+  var delimiter = "";
+  for (var s = 0; s < _MaxSectors; s++){
+    for (var b = 0; b < _MaxBlocks; b++){
+      var key = "0" + s + b;
+      if (key != "000" && getBlockStatus(key) == "filled"){
+        files += delimiter + getDataFromBlock(key);
+        delimiter = ", ";
+      }
+    }
+  }
+  return files;
+}
+
 function fillBlock(block, nextAddress, contents){
   localStorage[block] = generateBlock("1" + nextAddress + contents);
   updateFirstUnusedSlot();
@@ -189,12 +205,18 @@ function getBlockStatus(block){
 }
 
 function getDataFromBlock(block){
-  var i = localStorage[block].substr(4).indexOf("-");
+  var i = localStorage[block].substr(4).indexOf("--");
   if (i !== -1){
-    return localStorage[block].substr(4, (localStorage[block].substr(4).indexOf("-")));
+    return localStorage[block].substr(4, (localStorage[block].substr(4).indexOf("--")));
   }
   else{
-    return localStorage[block].substr(4);
+    i = localStorage[block].substr(4).indexOf("-");
+    if (i !== -1){
+      return localStorage[block].substr(4, (localStorage[block].substr(4).indexOf("-")));
+    }
+    else{
+      return localStorage[block].substr(4);
+    }
   }
 }
 
