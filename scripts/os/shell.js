@@ -119,7 +119,7 @@ function shellInit() {
   // load
   sc = new ShellCommand();
   sc.command = "load";
-  sc.description = "- Attempts to load the program in the user input box into memory.";
+  sc.description = "[priority] - Attempts to load the program in the user input box into memory, optionally setting the priority to the given value.";
   sc.function = shellLoad;
   this.commandList[this.commandList.length] = sc;
   
@@ -526,7 +526,7 @@ function shellBsod()
   krnTrapError("BSOD command issued.");
 }
 
-function shellLoad()
+function shellLoad(args)
 {
   // validate code
   var userInput = document.getElementById("taProgramInput").value;
@@ -548,6 +548,15 @@ function shellLoad()
     var pcb = new Pcb();
     // assign pid based on how many processes have been loaded
     pcb.pid = _Processes.length;
+    if (args.length != 0){
+      if (!isNaN(parseInt(args[0]))){
+        pcb.priority = parseInt(args[0]);
+      }
+      else{
+        _StdIn.putText("Priority must be an integer.");
+        return;
+      }
+    }
     // add pcb to the list of processes
     _Processes.push(pcb);
     if (_MemoryManager.allocate(pcb)){

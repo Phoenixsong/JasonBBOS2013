@@ -22,9 +22,30 @@ function Scheduler(){
   this.changeProcess = function(){
     _Mode = 1;
     if (_ReadyQueue.getSize() != 0){
-      do{
-        _CurrentProcess = _ReadyQueue.dequeue();
-      } while (_CurrentProcess != null && _CurrentProcess.state == "terminated");
+      if (_SchedulingAlg != "priority"){
+        do{
+          _CurrentProcess = _ReadyQueue.dequeue();
+        } while (_CurrentProcess != null && _CurrentProcess.state == "terminated");
+      }
+      else{
+        var highestPriorityPcb = null;
+        for (var i = 0; i < _ReadyQueue.getSize(); i++){
+          var pcb = _ReadyQueue.dequeue();
+          if (pcb.state != "terminated"){
+            if (highestPriorityPcb == null){
+              highestPriorityPcb = pcb;
+            }
+            else if (highestPriorityPcb.priority < pcb.priority){
+              _ReadyQueue.enqueue(highestPriorityPcb); // push the old process back onto the queue first
+              highestPriorityPcb = pcb; // then set pcb to the new, higher priority process
+            }
+            else{
+              _ReadyQueue.enqueue(pcb); // process doesn't have higher priority, put it back in the queue
+            }
+          }
+        }
+        _CurrentProcess = highestPriorityPcb;
+      }
       if (_CurrentProcess != null){ // found a valid process in the ready queue, load cpu with pcb values and run
         if (_CurrentProcess.state != "disk"){
           _CurrentProcess.state = "running";
@@ -68,7 +89,7 @@ function Scheduler(){
         }
       }
     }
-    else if (_SchedulingAlg == "fcfs"){
+    else{
       _CPU.cycle();
     }
   };

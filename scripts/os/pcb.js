@@ -15,4 +15,5 @@ function Pcb(){
   this.z = 0; // z register
   this.base = 0; // start address of the block of memory allocated to the process
   this.limit = 0; // the amount of memory allocated to the process
+  this.priority = 0;
 }
